@@ -34,10 +34,12 @@ function Login() {
       });
 
       const result = await response.json(); // parse response
-      console.log("Login response:", result);
+      // console.log("Login response:", result);
 
       if (result.success) {
         dispatch(login(result.authToken));
+        localStorage.setItem("auth-token", result.authToken);
+        // console.log("saved in local storage from login " + result.authToken);
         navigate("/");
       } else {
         // handle error from backend

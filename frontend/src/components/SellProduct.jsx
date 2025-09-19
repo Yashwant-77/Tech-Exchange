@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "./Header";
-import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { IndianRupee, ShoppingBag, Tag, Award, Star } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -66,7 +66,9 @@ function SignUp() {
           <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
             {/* Heading box */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-center">
-              <h1 className="text-2xl font-bold text-white">Create Account</h1>
+              <h1 className="text-2xl font-bold text-white">
+                Sell Your Product
+              </h1>
             </div>
 
             {/* all inputs  */}
@@ -77,148 +79,91 @@ function SignUp() {
               >
                 <div className="relative">
                   <label
-                    htmlFor="fullname"
+                    htmlFor="productName"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Full Name
+                    Product Name
                   </label>
-                  <User className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                  <ShoppingBag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+
                   <input
-                    {...register("fullname", {
+                    {...register("productName", {
                       required: "This field is required",
-                      minLength: {
-                        value: 5,
-                        message: "Name must be at least 5 characters long",
-                      },
                     })}
-                    name="fullname"
+                    name="productName"
                     className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     type="text"
-                    placeholder="Enter you full name"
+                    placeholder="Enter name of your product"
                   />
-                  {errors.fullname && (
+                  {errors.productName && (
                     <span className="text-red-500">
-                      {errors.fullname?.message}
+                      {errors.productName?.message}
                     </span>
                   )}
                 </div>
+
                 <div className="relative">
                   <label
-                    htmlFor="email"
+                    htmlFor="price"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Email
+                    Price
                   </label>
-                  <Mail className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
-                  <input
-                    {...register("email", {
-                      required: "This field is required",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Please enter a valid email",
-                      },
-                    })}
-                    name="email"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3  focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="email"
-                    placeholder="xyz@gmail.com"
-                  />
-                  {errors.email && (
-                    <span className="text-red-500">
-                      {errors.email?.message}
-                    </span>
-                  )}
-                </div>
-                <div className="relative">
-                  <label
-                    htmlFor="Password"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Password
-                  </label>
-                  <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
-                  {showPassword ? (
-                    <Eye
-                      onClick={() => setShowPassword(false)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400 "
-                    />
-                  ) : (
-                    <EyeOff
-                      onClick={() => setShowPassword(true)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400"
-                    />
-                  )}
+                  <IndianRupee className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
 
                   <input
-                    {...register("password", {
+                    {...register("price", {
                       required: "This field is required",
                       pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-
-                        message:
-                          "Password should contain at least 8 characters, one uppercase, one lowercase, one digit, and one special character",
+                        value: /^\d+(\.\d+)?$/, // regex for integer or decimal
+                        message: "Please enter a valid numeric value",
                       },
                     })}
-                    name="password"
+                    name="price"
                     className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="**********"
+                    type="text"
+                    placeholder="Enter price of the product"
                   />
-                  {errors.password && (
+                  {errors.price && (
                     <span className="text-red-500">
-                      {errors.password?.message}
+                      {errors.price?.message}
                     </span>
                   )}
                 </div>
+
                 <div className="relative">
                   <label
-                    htmlFor="confirmPassword"
+                    htmlFor="brand"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Confirm Password
+                    Brand
                   </label>
-                  <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
-                  {showConfirmPassword ? (
-                    <Eye
-                      onClick={() => setShowConfirmPassword(false)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400 "
-                    />
-                  ) : (
-                    <EyeOff
-                      onClick={() => setShowConfirmPassword(true)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400"
-                    />
-                  )}
+                  <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                  {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                  {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+
                   <input
-                    {...register("confirmPassword", {
+                    {...register("brand", {
                       required: "This field is required",
-                      validate: (value) =>
-                        value === watch("password") || "Passwords do not match",
                     })}
-                    name="confirmPassword"
+                    name="brand"
                     className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="**********"
+                    type="text"
+                    placeholder="Enter the brand of your product"
                   />
-                  {errors.confirmPassword && (
+                  {errors.brand && (
                     <span className="text-red-500">
-                      {errors.confirmPassword?.message}
+                      {errors.brand?.message}
                     </span>
                   )}
                 </div>
+
                 <button
                   className="w-full cursor-pointer inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
                   type="submit"
                 >
-                  Submit
+                  Publish for Sell
                 </button>
-                <div className="flex justify-center items-center">
-                  Already have account?&nbsp;
-                  <span className="text-blue-600">
-                    <Link to="/login">Log in</Link>
-                  </span>
-                </div>
               </form>
             </div>
           </div>

@@ -1,12 +1,14 @@
 import express from 'express';
+import fetchuser from './fetuser';
+import Products from '../models/Products';
 
 
 const productsRouter = express.Router();
 
 
-productsRouter.get('/getallproducts', (req, res) => {
+productsRouter.get('/getproduct', fetchuser, (req, res) => {
     try {
-        const products = User.find
+        const products = Products
     } catch (error) {
 
     }

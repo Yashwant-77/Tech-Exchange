@@ -47,8 +47,12 @@ export default function LandingPage() {
               verified, securely delivered.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button onClick={() => navigate("/login")}>Login</Button>
-              <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+              <Button className="w-full" onClick={() => navigate("/login")}>
+                Login
+              </Button>
+              <Button className="w-full" onClick={() => navigate("/signup")}>
+                Sign Up
+              </Button>
             </div>
           </div>
         </div>

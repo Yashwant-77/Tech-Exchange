@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { body, validationResult } from 'express-validator'
 import User from '../models/User.js'
+import fetchuser from './fetuser.js'
 
 
 // create an express router
@@ -135,21 +136,7 @@ authRouter.post('/login', [
     }
 )
 
-const fetchuser = (req, res, next) => {
-    const token = req.header('auth-token');
-    if (!token) {
-        res.stauts[401].send({ error: "Please authenticate using valid token" })
-    }
 
-    try {
-        const data = jwt.verify(token, JWT_SECRET)
-        req.user = data.user
-        next();
-
-    } catch (error) {
-        res.status(401).send({ error: "Please authenticate using valid token" })
-    }
-}
 
 
 
@@ -157,7 +144,7 @@ authRouter.post('/getuser', fetchuser, async (req, res) => {
     try {
         let userId = req.user.id
         const user = await User.findById(userId).select('-password')
-        res.send(user);
+        res.send({ success: true, user });
     } catch (error) {
         console.log(error.message)
         res.status(500).send("Internal server error");

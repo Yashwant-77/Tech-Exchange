@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Button from "./Button";
@@ -8,6 +8,7 @@ import { logout } from "../store/authSlice";
 
 function Header() {
   const isLoggedIn = useSelector((state) => state.auth.status);
+  const cartItems = useSelector((state) => state.cartItems.products);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,14 +37,15 @@ function Header() {
             >
               Home
             </Link>
+
             <Link
-              to="/buy"
+              to={isLoggedIn ? "/buy" : "/"}
               className="text-gray-600 hover:text-blue-600 font-medium"
             >
               Buy
             </Link>
             <Link
-              to="/sell"
+              to={isLoggedIn ? "/sell" : "/"}
               className="text-gray-600 hover:text-blue-600 font-medium"
             >
               Sell
@@ -58,15 +60,22 @@ function Header() {
           <div className="hidden md:flex items-center  space-x-4">
             {!isLoggedIn ? (
               <>
-                <Button onClick={() => navigate("/login")}>
-                  <User className="h-4 w-4 mr-2" />
+                <Button className="w-30" onClick={() => navigate("/login")}>
                   Login
                 </Button>
-                <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+                <Button className="w-30" onClick={() => navigate("/signup")}>
+                  SignUp
+                </Button>
               </>
             ) : (
               <div className="flex justify-center space-x-5 items-center">
-                <User />
+                <div className="flex flex-col items-center">
+                  <p>{cartItems.length}</p>
+                  <ShoppingCart />
+                </div>
+                <div className="rounded-full p-3 bg-blue-600">
+                  <User className="cursor-pointer text-white w-6 h-6" />
+                </div>
                 <Button onClick={logoutButton}>
                   <User className="h-4 w-4 mr-2" />
                   Logout
@@ -96,13 +105,13 @@ function Header() {
               </Link>
 
               <Link
-                to="/buy"
+                to={isLoggedIn ? "/buy" : "/"}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Buy
               </Link>
               <Link
-                to="/sell"
+                to={isLoggedIn ? "/sell" : "/"}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Sell
@@ -116,13 +125,31 @@ function Header() {
               {/* start chatgpt code*/}
 
               {/* end  */}
+
               <div className="flex space-x-2 pt-2">
-                <Button className="flex-1" onClick={() => navigate("/login")}>
-                  Login
-                </Button>
-                <Button className="flex-1" onClick={() => navigate("/signup")}>
-                  Sign Up
-                </Button>
+                {isLoggedIn ? (
+                  <Button
+                    className="flex-1"
+                    onClick={() => navigate("/signup")}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      className="flex-1"
+                      onClick={() => navigate("/login")}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      className="flex-1"
+                      onClick={() => navigate("/signup")}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

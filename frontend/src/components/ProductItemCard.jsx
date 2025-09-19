@@ -1,7 +1,18 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+import { CircleCheck } from "lucide-react";
 function ProductItemCard({ product }) {
-  const { img, name, price, description, date } = product;
+  const { img, name, price, description, date, id } = product;
+
+  const dispatch = useDispatch();
+
+  const [showMsg, setShowMsg] = useState(false);
+
+  const handleOnClick = () => {
+    dispatch(addToCart(product));
+    setShowMsg(true);
+  };
 
   return (
     <div className="w-full  bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 mt-4 overflow-hidden">
@@ -13,9 +24,6 @@ function ProductItemCard({ product }) {
             alt={name}
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
           />
-          {/* <div className="absolute top-2 right-2 bg-white/80 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-            New
-          </div> */}
         </div>
 
         {/* Body */}
@@ -33,10 +41,21 @@ function ProductItemCard({ product }) {
             <p className="text-xl font-bold text-gray-900 mr-3">
               &#8377;{price}
             </p>
-            <button className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-xl font-medium shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300">
+
+            <button
+              onClick={handleOnClick}
+              className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-xl font-medium shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300"
+            >
               Add to Cart
             </button>
           </div>
+
+          {showMsg && (
+            <div className="flex justify-center mt-2">
+              <CircleCheck />
+              <spa className="ms-2"> Added to Cart</spa>
+            </div>
+          )}
         </div>
       </div>
     </div>
