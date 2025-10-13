@@ -20,31 +20,38 @@ function App() {
     const checkAuthToken = async () => {
       const localToken = localStorage.getItem("auth-token");
 
-      if (localToken) {
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localToken,
-          },
-        });
+      try {
+        if (localToken) {
+          const response = await fetch(
+            "http://localhost:5000/api/auth/getuser",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "auth-token": localToken,
+              },
+            }
+          );
 
-        if (response.status === 401) {
-          console.warn("Invalid token, logging out...");
-          localStorage.removeItem("auth-token");
-          dispatch(logout()); // you should have a logout action
-          return;
+          // if (response.status === 401) {
+          //   console.warn("Invalid token, logging out...");
+          //   localStorage.removeItem("auth-token");
+          //   dispatch(logout()); // you should have a logout action
+          //   return;
+          // }
+
+          const result = await response.json();
+
+          if (result.success) {
+            dispatch(login(localToken));
+          }
         }
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-          dispatch(login(localToken));
-        }
+      } catch (error) {
+        console.log("error : " + error);
       }
     };
     checkAuthToken();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>

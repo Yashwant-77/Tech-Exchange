@@ -46,7 +46,7 @@ function ProductItemCard({ product }) {
               onClick={handleOnClick}
               className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-xl font-medium shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300"
             >
-              Add to Cart
+              Add to cart
             </button>
           </div>
 
