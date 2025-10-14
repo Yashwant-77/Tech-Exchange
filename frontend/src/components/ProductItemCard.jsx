@@ -16,7 +16,7 @@ function ProductItemCard({ product }) {
 
   return (
     <div className="w-full  bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 mt-4 overflow-hidden">
-      <div className="m-3 border-2 border-gray-400 rounded-b-2xl">
+      <div className="m-3 border-2  border-[#dd3a44] rounded-b-2xl">
         {/* Image */}
         <div className="pt-3 relative h-52 w-full overflow-hidden">
           <img
@@ -44,7 +44,7 @@ function ProductItemCard({ product }) {
 
             <button
               onClick={handleOnClick}
-              className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-xl font-medium shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300"
+              className="cursor-pointer bg-[#dd3a44] hover:bg-[#E85C64] text-white px-4 py-2 rounded-xl font-medium shadow-md shadow-lg transition-all duration-300"
             >
               Add to cart
             </button>

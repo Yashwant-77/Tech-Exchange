@@ -58,14 +58,14 @@ function SignUp() {
   };
 
   return (
-    <div className="min-h-screen  bg-gradient-to-br from-blue-50 to-indigo-100   ">
+    <div className="min-h-screen  bg-[#efe6de]   ">
       <Header />
       <div className="flex justify-center items-center pt-5">
         {/* Box which is in middle of page */}
         <div className=" w-full max-w-md mx-3 ">
           <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
             {/* Heading box */}
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-center">
+            <div className="bg-[#dd3a44] p-8 text-center">
               <h1 className="text-2xl font-bold text-white">Create Account</h1>
             </div>
 
@@ -208,7 +208,7 @@ function SignUp() {
                   )}
                 </div>
                 <button
-                  className="w-full cursor-pointer inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
+                  className="w-full cursor-pointer inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-[#dd3a44] text-white hover:bg-[#E85C64] px-6 py-3 text-lg"
                   type="submit"
                 >
                   Submit

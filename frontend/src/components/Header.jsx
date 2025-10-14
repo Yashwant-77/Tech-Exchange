@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,40 +19,42 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-4">
+    <header className="sticky top-0 z-50 bg-[#efe6de] shadow-sm">
+      <div className="container mx-auto px-2 py-4">
         <div className="flex items-center justify-between">
           <Link to="/">
             <div className="flex items-center space-x-2">
               {/* <div className="bg-blue-600 w-8 h-8 rounded-lg"></div> */}
-              <span className="text-xl font-bold text-gray-900">
+
+              <span className="text-3xl  font-bold font-serif text-[#DD3A44] ">
                 TechExchange
               </span>
             </div>
           </Link>
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8 mx-4">
             <Link
               to="/"
-              className="text-gray-600 hover:text-blue-600 font-medium"
+              className="text-gray-600 hover:text-[#DD3A44] font-medium"
             >
               Home
             </Link>
-
-            <Link
-              to={isLoggedIn ? "/buy" : "/"}
-              className="text-gray-600 hover:text-blue-600 font-medium"
-            >
-              Buy
-            </Link>
             <Link
               to={isLoggedIn ? "/sell" : "/"}
-              className="text-gray-600 hover:text-blue-600 font-medium"
+              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
             >
               Sell
             </Link>
+
+            <Link
+              to={isLoggedIn ? "/contact" : "/"}
+              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
+            >
+              Contact
+            </Link>
+
             <Link
               to="/about"
-              className="text-gray-600 hover:text-blue-600 font-medium"
+              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
             >
               About
             </Link>
@@ -60,10 +62,16 @@ function Header() {
           <div className="hidden md:flex items-center  space-x-4">
             {!isLoggedIn ? (
               <>
-                <Button className="w-30" onClick={() => navigate("/login")}>
+                <Button
+                  className="w-30 bg-[#DD3A44] hover:bg-[#E85C64] text-white "
+                  onClick={() => navigate("/login")}
+                >
                   Login
                 </Button>
-                <Button className="w-30" onClick={() => navigate("/signup")}>
+                <Button
+                  className="w-30 bg-gray-400 hover:bg-[#E85C64] hover:text-white text-black"
+                  onClick={() => navigate("/signup")}
+                >
                   SignUp
                 </Button>
               </>
@@ -73,10 +81,13 @@ function Header() {
                   <p>{cartItems.length}</p>
                   <ShoppingCart />
                 </div>
-                <div className="rounded-full p-3 bg-blue-600">
+                <div className="rounded-full p-3 bg-[#DD3A44]">
                   <User className="cursor-pointer text-white w-6 h-6" />
                 </div>
-                <Button onClick={logoutButton}>
+                <Button
+                  className="bg-[#DD3A44] text-white"
+                  onClick={logoutButton}
+                >
                   <User className="h-4 w-4 mr-2" />
                   Logout
                 </Button>
@@ -95,30 +106,30 @@ function Header() {
           </Button>
         </div>
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t mt-2">
+          <div className="md:hidden py-4 border-t mt-2 ">
             <div className="flex flex-col space-y-3">
               <Link
                 to="/"
-                className="text-gray-600 hover:text-blue-600 font-medium"
+                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
               >
                 Home
               </Link>
 
               <Link
-                to={isLoggedIn ? "/buy" : "/"}
-                className="text-gray-600 hover:text-blue-600 font-medium"
-              >
-                Buy
-              </Link>
-              <Link
                 to={isLoggedIn ? "/sell" : "/"}
-                className="text-gray-600 hover:text-blue-600 font-medium"
+                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
               >
                 Sell
               </Link>
               <Link
+                to={isLoggedIn ? "/contact" : "/"}
+                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
+              >
+                Contact
+              </Link>
+              <Link
                 to="/about"
-                className="text-gray-600 hover:text-blue-600 font-medium"
+                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
               >
                 About
               </Link>
@@ -129,7 +140,7 @@ function Header() {
               <div className="flex space-x-2 pt-2">
                 {isLoggedIn ? (
                   <Button
-                    className="flex-1"
+                    className="flex-1 bg-[#DD3A44] text-white hover:text-[#DD3A44]"
                     onClick={() => navigate("/signup")}
                   >
                     Logout
@@ -137,13 +148,13 @@ function Header() {
                 ) : (
                   <>
                     <Button
-                      className="flex-1"
+                      className="flex-1  bg-[#DD3A44] text-white hover:text-[#DD3A44]"
                       onClick={() => navigate("/login")}
                     >
                       Login
                     </Button>
                     <Button
-                      className="flex-1"
+                      className="flex-1  bg-[#DD3A44] text-white hover:text-[#DD3A44]"
                       onClick={() => navigate("/signup")}
                     >
                       Sign Up

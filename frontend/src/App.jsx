@@ -10,7 +10,8 @@ import { useDispatch } from "react-redux";
 import { login, logout } from "./store/authSlice";
 import LandingPage from "./components/LandingPage";
 import SellProduct from "./components/SellProduct";
-import BuyProduct from "./components/BuyProduct";
+
+import Contact from "./components/Contact";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.status);
@@ -62,7 +63,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/about" element={<About />} />
           <Route path="/sell" element={<SellProduct />} />
-          <Route path="/buy" element={<BuyProduct />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </Router>
     </>
