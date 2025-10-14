@@ -16,13 +16,13 @@ function ProductItemCard({ product }) {
 
   return (
     <div className="w-full  bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 mt-4 overflow-hidden">
-      <div className="m-3 border-2  border-[#dd3a44] rounded-b-2xl">
+      <div className="m-3 border-2  border-[#dd3a44] rounded-2xl">
         {/* Image */}
         <div className="pt-3 relative h-52 w-full overflow-hidden">
           <img
             src={img}
             alt={name}
-            className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+            className="w-full h-full  object-cover transition-transform duration-500 hover:scale-104 rounded-2xl"
           />
         </div>
 
@@ -33,7 +33,7 @@ function ProductItemCard({ product }) {
             <p className="text-sm text-gray-500 mt-1 line-clamp-2">
               {description}
             </p>
-            <p className="text-sm">{date}</p>
+            <p className="text-sm font-semibold">{date}</p>
           </div>
 
           {/* Price & Button */}
