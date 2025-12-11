@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import { IndianRupee, ShoppingBag, Tag, Award, Star } from "lucide-react";
+import { IndianRupee, ShoppingBag, FileText, Tag, Images } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../store/authSlice";
+import Footer from "./Footer";
+import Loading from "./Loading";
 
 function SignUp() {
   const {
@@ -14,161 +16,289 @@ function SignUp() {
     reset,
     formState: { errors },
   } = useForm();
-  const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const createUser = async (data) => {
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/createuser",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fullname: data.fullname,
-            email: data.email,
-            password: data.password,
-          }),
-        }
-      );
+  const [products, setProducts] = useState([]);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-      const result = await response.json();
-      // console.log("after response.json" + result);
+  const sellProduct = async (productData) => {
+    setLoading(true);
+    const token = localStorage.getItem("auth-token");
+    if (!token) {
+      dispatch(logout());
+      navigate("/login");
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await fetch("http://localhost:5000/api/products/addproduct", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+        body: JSON.stringify({
+          name: productData.name,
+          price: productData.price,
+          category: productData.category,
+          description: productData.description,
+          brand: productData.brand,
+          location: productData.location,
+          img: productData.img, // base64 or URL
+        }),
+      });
+
+      const result = await res.json();
 
       if (result.success) {
-        dispatch(login(result.authToken));
-        localStorage.setItem("auth-token", result.authToken);
-        // console.log("saved in local storage from signup " + result.authToken);
+        // Product added successfully
+        console.log("Product added:", result.product);
+        alert("Product added successfully!");
+        reset(); // clear form
+        // optionally navigate to product page or home
         navigate("/");
+        // setLoading(false);
       } else {
-        console.log("else part of data.success" + result.error);
-        setError(result.error);
-        reset();
+        // Handle error from backend
+        console.error("Error adding product:", result.error);
+        alert("Error adding product: " + result.error);
+        // setLoading(false);
       }
-    } catch (err) {
-      console.log(err.message);
-      setError(err.message);
-      reset();
+    } catch (error) {
+      console.log("server error in adding new product:", error);
+      // setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen  bg-gradient-to-br from-blue-50 to-indigo-100   ">
+    <div className="min-h-screen  bg-[#efe6de]   ">
       <Header />
-      <div className="flex justify-center items-center pt-5">
-        {/* Box which is in middle of page */}
-        <div className=" w-full max-w-md mx-3 ">
-          <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-            {/* Heading box */}
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-center">
-              <h1 className="text-2xl font-bold text-white">
-                Sell Your Product
-              </h1>
-            </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="flex justify-center items-center pt-5 ">
+          {/* Box which is in middle of page */}
+          <div className=" w-full max-w-md mx-3 ">
+            <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+              {/* Heading box */}
+              <div className="bg-[#dd3a44] p-8 text-center">
+                <h1 className="text-2xl font-bold text-white">
+                  Sell Your Product
+                </h1>
+              </div>
 
-            {/* all inputs  */}
-            <div>
-              <form
-                onSubmit={handleSubmit(createUser)}
-                className="p-8 space-y-6"
-              >
-                <div className="relative">
-                  <label
-                    htmlFor="productName"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Product Name
-                  </label>
-                  <ShoppingBag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
-
-                  <input
-                    {...register("productName", {
-                      required: "This field is required",
-                    })}
-                    name="productName"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text"
-                    placeholder="Enter name of your product"
-                  />
-                  {errors.productName && (
-                    <span className="text-red-500">
-                      {errors.productName?.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <label
-                    htmlFor="price"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Price
-                  </label>
-                  <IndianRupee className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
-
-                  <input
-                    {...register("price", {
-                      required: "This field is required",
-                      pattern: {
-                        value: /^\d+(\.\d+)?$/, // regex for integer or decimal
-                        message: "Please enter a valid numeric value",
-                      },
-                    })}
-                    name="price"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text"
-                    placeholder="Enter price of the product"
-                  />
-                  {errors.price && (
-                    <span className="text-red-500">
-                      {errors.price?.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <label
-                    htmlFor="brand"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Brand
-                  </label>
-                  <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
-                  {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
-                  {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
-
-                  <input
-                    {...register("brand", {
-                      required: "This field is required",
-                    })}
-                    name="brand"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text"
-                    placeholder="Enter the brand of your product"
-                  />
-                  {errors.brand && (
-                    <span className="text-red-500">
-                      {errors.brand?.message}
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  className="w-full cursor-pointer inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 text-lg"
-                  type="submit"
+              {/* all inputs  */}
+              <div>
+                <form
+                  onSubmit={handleSubmit(sellProduct)}
+                  className="p-8 space-y-6"
                 >
-                  Publish for Sell
-                </button>
-              </form>
+                  <div className="relative">
+                    <label
+                      htmlFor="productName"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Product Name <span className="text-red-600">*</span>
+                    </label>
+                    <ShoppingBag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+
+                    <input
+                      {...register("productName", {
+                        required: "This field is required",
+                      })}
+                      name="productName"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Enter name of your product"
+                    />
+                    {errors.productName && (
+                      <span className="text-red-500">
+                        {errors.productName?.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <label
+                      htmlFor="price"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Price <span className="text-red-600">*</span>
+                    </label>
+                    <IndianRupee className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+
+                    <input
+                      {...register("price", {
+                        required: "This field is required",
+                        pattern: {
+                          value: /^\d+(\.\d+)?$/, // regex for integer or decimal
+                          message: "Please enter a valid numeric value",
+                        },
+                      })}
+                      name="price"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Enter price of the product"
+                    />
+                    {errors.price && (
+                      <span className="text-red-500">
+                        {errors.price?.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <label
+                      htmlFor="brand"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Brand <span className="text-red-600">*</span>
+                    </label>
+                    <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+
+                    <input
+                      {...register("brand", {
+                        required: "This field is required",
+                      })}
+                      name="brand"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Enter the brand of your product"
+                    />
+                    {errors.brand && (
+                      <span className="text-red-500">
+                        {errors.brand?.message}
+                      </span>
+                    )}
+                  </div>
+                  {/* category */}
+                  <div className="relative">
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Category <span className="text-red-600">*</span>
+                    </label>
+                    <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+
+                    <input
+                      {...register("category", {
+                        required: "This field is required",
+                      })}
+                      // defaultValue="Tech"
+                      name="category"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Enter the brand of your product"
+                    />
+                    {errors.category && (
+                      <span className="text-red-500">
+                        {errors.category?.message}
+                      </span>
+                    )}
+                  </div>
+                  {/* location */}
+                  <div className="relative">
+                    <label
+                      htmlFor="location"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Location <span className="text-red-600">*</span>
+                    </label>
+                    <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+
+                    <input
+                      {...register("location", {
+                        required: "This field is required",
+                      })}
+                      name="location"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Enter the brand of your product"
+                    />
+                    {errors.location && (
+                      <span className="text-red-500">
+                        {errors.location?.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <label
+                      htmlFor="description"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Description <span className="text-red-600">*</span>
+                    </label>
+                    <FileText className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+
+                    <input
+                      {...register("description", {
+                        required: "This field is required",
+                      })}
+                      name="description"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Enter the brand of your product"
+                    />
+                    {errors.description && (
+                      <span className="text-red-500">
+                        {errors.description?.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <label
+                      htmlFor="images"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Images <span className="text-red-600">*</span>
+                    </label>
+                    <Images className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+
+                    <input
+                      {...register("images", {
+                        required: "This field is required",
+                      })}
+                      name="images"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Add some images URLs separated by commas"
+                    />
+                    {errors.images && (
+                      <span className="text-red-500">
+                        {errors.images?.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    className="w-full cursor-pointer inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-[#dd3a44] text-white hover:bg-[#E85C64] px-6 py-3 text-lg"
+                    type="submit"
+                  >
+                    Publish for Sell
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+      {/* <Footer /> */}
     </div>
   );
 }

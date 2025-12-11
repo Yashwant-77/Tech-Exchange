@@ -39,13 +39,13 @@ function Footer() {
               </li>
 
               <li>
-                <Link to="/buy" className="hover:text-white">
-                  Buy
+                <Link to="/sell" className="hover:text-white">
+                  Sell
                 </Link>
               </li>
               <li>
-                <Link to="/sell" className="hover:text-white">
-                  Sell
+                <Link to="/contact" className="hover:text-white">
+                  Contact Us
                 </Link>
               </li>
               <li>

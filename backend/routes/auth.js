@@ -11,7 +11,8 @@ const authRouter = express.Router();
 
 
 // jason web token secret
-const JWT_SECRET = process.env.JWT_SECRET || "TechExchangeSecretKey";
+const JWT_SECRET = process.env.JWT_SECRET || "yashwant_chouhan_secret_key"
+
 
 // Password strength checker function
 function isStrongPassword(password) {
@@ -152,4 +153,6 @@ authRouter.get('/getuser', fetchuser, async (req, res) => {
 })
 
 
+
 export default authRouter;
+

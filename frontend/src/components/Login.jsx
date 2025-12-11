@@ -37,7 +37,7 @@ function Login() {
       // console.log("Login response:", result);
 
       if (result.success) {
-        dispatch(login(result.authToken));
+        dispatch(login({ authToken: result.authToken }));
         localStorage.setItem("auth-token", result.authToken);
         // console.log("saved in local storage from login " + result.authToken);
         navigate("/");
@@ -79,7 +79,7 @@ function Login() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Email
+                    Email <span className="text-red-600">*</span>
                   </label>
                   <Mail className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
                   <input
@@ -106,7 +106,7 @@ function Login() {
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Password
+                    Password <span className="text-red-600">*</span>
                   </label>
                   <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
                   {showPassword ? (

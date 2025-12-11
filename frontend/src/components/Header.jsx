@@ -8,13 +8,14 @@ import { logout } from "../store/authSlice";
 
 function Header() {
   const isLoggedIn = useSelector((state) => state.auth.status);
-  const cartItems = useSelector((state) => state.cartItems.products);
+  const cartItems = useSelector((state) => state.cartItems.cartItems);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutButton = () => {
     dispatch(logout());
+    localStorage.removeItem("auth-token");
     navigate("/");
   };
 
@@ -39,14 +40,14 @@ function Header() {
               Home
             </Link>
             <Link
-              to={isLoggedIn ? "/sell" : "/"}
+              to="/sell"
               className="text-gray-600 hover:text-[#DD3A44]  font-medium"
             >
               Sell
             </Link>
 
             <Link
-              to={isLoggedIn ? "/contact" : "/"}
+              to="/contact" 
               className="text-gray-600 hover:text-[#DD3A44]  font-medium"
             >
               Contact
@@ -79,7 +80,9 @@ function Header() {
               <div className="flex justify-center space-x-5 items-center">
                 <div className="flex flex-col items-center">
                   <p>{cartItems.length}</p>
-                  <ShoppingCart />
+                  <Link to="/cart">
+                    <ShoppingCart className="cursor-pointer" />
+                  </Link>
                 </div>
                 <div className="rounded-full p-3 bg-[#DD3A44]">
                   <User className="cursor-pointer text-white w-6 h-6" />
@@ -116,13 +119,13 @@ function Header() {
               </Link>
 
               <Link
-                to={isLoggedIn ? "/sell" : "/"}
+                to="/sell" 
                 className="text-gray-600 hover:text-[#DD3A44]  font-medium"
               >
                 Sell
               </Link>
               <Link
-                to={isLoggedIn ? "/contact" : "/"}
+                to="/contact"
                 className="text-gray-600 hover:text-[#DD3A44]  font-medium"
               >
                 Contact
@@ -141,7 +144,7 @@ function Header() {
                 {isLoggedIn ? (
                   <Button
                     className="flex-1 bg-[#DD3A44] text-white hover:text-[#DD3A44]"
-                    onClick={() => navigate("/signup")}
+                    onClick={logoutButton}
                   >
                     Logout
                   </Button>

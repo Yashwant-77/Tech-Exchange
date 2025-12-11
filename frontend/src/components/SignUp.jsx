@@ -41,7 +41,7 @@ function SignUp() {
       // console.log("after response.json" + result);
 
       if (result.success) {
-        dispatch(login(result.authToken));
+        dispatch(login({ authToken: result.authToken }));
         localStorage.setItem("auth-token", result.authToken);
         // console.log("saved in local storage from signup " + result.authToken);
         navigate("/");
@@ -80,7 +80,7 @@ function SignUp() {
                     htmlFor="fullname"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Full Name
+                    Full Name <span className="text-red-600">*</span>
                   </label>
                   <User className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
                   <input
@@ -107,7 +107,7 @@ function SignUp() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Email
+                    Email <span className="text-red-600">*</span>
                   </label>
                   <Mail className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
                   <input
@@ -134,7 +134,7 @@ function SignUp() {
                     htmlFor="Password"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Password
+                    Password <span className="text-red-600">*</span>
                   </label>
                   <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
                   {showPassword ? (
@@ -176,7 +176,7 @@ function SignUp() {
                     htmlFor="confirmPassword"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Confirm Password
+                    Confirm Password <span className="text-red-600">*</span>
                   </label>
                   <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
                   {showConfirmPassword ? (

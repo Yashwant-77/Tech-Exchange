@@ -2,23 +2,28 @@ import mongoose, { Schema } from "mongoose";
 
 
 const ProductsSchema = new Schema({
-    userId: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
         required: true
-    },
-    tags: {
-        type: [String],
-        default: []
     },
     price: {
         type: Number,
         required: true
     },
+    category :{
+        type : String,
+        default : "tech"
+    },
     description: {
+        type: String,
+        required: true
+    },
+    
+    brand: {
+        type: String,
+        default: ""
+    },
+    location:{
         type: String,
         required: true
     },
@@ -26,14 +31,13 @@ const ProductsSchema = new Schema({
         type: [String],
         required: true
     },
-    brand: {
-        type: String,
+    sellerId :{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    }
-})
+}, { timestamps: true }
+)
 
 
 const Products = mongoose.model("Products", ProductsSchema);
