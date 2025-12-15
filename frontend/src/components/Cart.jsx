@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Header from "./Header";
+
 import Footer from "./Footer";
 import Button from "./Button";
-import ProductItemCard from "./ProductItemCard";
 import CartItemCard from "./CartItemCard";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, updateCartQty, clearCart } from "../store/cartSlice";
+import {  clearCart } from "../store/cartSlice";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -23,7 +21,7 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-[#efe6de]">
-      <Header />
+      {/* <Header /> */}
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-semibold mb-4">Your Cart</h1>
 
@@ -40,7 +38,7 @@ export default function Cart() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               {items.map((p) => (
-                <CartItemCard key={p.id} p={p} />
+                <CartItemCard key={p._id} p={p} />
               ))}
             </div>
 

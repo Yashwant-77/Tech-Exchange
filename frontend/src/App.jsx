@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./components/Header";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import About from "./components/About";
-import { BrowserRouter as Router, Routes, Route , useLocation } from "react-router-dom";
+import {  Routes, Route , useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { login, logout } from "./store/authSlice";
 import LandingPage from "./components/LandingPage";
 import SellProduct from "./components/SellProduct";
-
 import Contact from "./components/Contact";
 import Cart from "./components/Cart";
 import ChatWithSeller from "./components/ChatWithSeller";
 import Loading from "./components/Loading";
-import { setCartItems ,  addToCart, removeFromCart, increaseQty, decreaseQty, updateCartQty, clearCart ,checkedCartItems  } from "./store/cartSlice";
-
+import Header from "./components/Header";
+import Alert from "./components/Alert";
+import EditProduct from "./components/EditProduct";
+import Profile from "./components/Profile";
+import { setCartItems } from "./store/cartSlice";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.status);
-  const cartItems = useSelector((state) => state.cartItems.status);
+  const cartItems = useSelector((state) => state.cartItems.cartItems);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = useLocation();
@@ -55,6 +56,7 @@ function App() {
 
         if(response.ok && result.success){
           if(mounted) dispatch(login({ authToken: token , userData : result.user})); 
+          dispatch(setCartItems(result.user.cartItems || [])); 
         }
         else{
            console.log("invalid token in App.jsx:", result);
@@ -89,38 +91,33 @@ function App() {
 
 
 
-  useEffect(()=>{
-    if(!isLoggedIn) return;
 
-    const fetchCartItems = async () => {
-      const token = localStorage.getItem("auth-token");
-      try {
-        const response = await fetch("http://localhost:5000/api/cart/updateCart", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": token,
-          },
-          body: JSON.stringify({
-            cartItems: cartItems,
-          }),
-        });
-        const result = await response.json();
-        if(result.success){
-          console.log("Cart items synced successfully");
-        }
-        else{
-          console.log("Failed to sync cart items:", result.error);  
-        }
-        
-      } catch (error) {
-        console.log("Error fetching cart items:", error);
-      }
-    };
 
-    fetchCartItems();
+useEffect(() => {
+  if (!isLoggedIn) return;
 
-  },[cartItems]);
+  const syncCart = async () => {
+    const token = localStorage.getItem("auth-token");
+    if (!token) return;
+
+    try {
+      await fetch("http://localhost:5000/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+        body: JSON.stringify({ cartItems }),
+      });
+    } catch (err) {
+      console.error("Cart sync failed", err);
+    }
+  };
+
+  syncCart();
+}, [cartItems]);
+
+
 
 
 
@@ -131,8 +128,9 @@ function App() {
     
 
   return (
-    <>
-    
+    <div className="bg-[#efe6de]">
+    <Header />
+    <Alert/>
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -141,10 +139,12 @@ function App() {
         <Route path="/sell" element={ isLoggedIn ? <SellProduct /> : <Login/>} />
         <Route path="/contact" element={isLoggedIn ? <Contact /> : <Login/>} />
         <Route path="/cart" element={isLoggedIn ? <Cart /> : <Login/>} />
+        <Route path="/profile" element={isLoggedIn ? <Profile /> : <Login/>} />
+        <Route path="/edit-product/:id" element={isLoggedIn ? <EditProduct /> : <Login/>} />
         <Route path="/chat" element={isLoggedIn ? <ChatWithSeller /> : <Login/>} /> 
       </Routes>
 
-    </>
+    </div>
   );
 }
 

@@ -85,7 +85,9 @@ function Header() {
                   </Link>
                 </div>
                 <div className="rounded-full p-3 bg-[#DD3A44]">
+                  <Link to="/profile">
                   <User className="cursor-pointer text-white w-6 h-6" />
+                  </Link>
                 </div>
                 <Button
                   className="bg-[#DD3A44] text-white"

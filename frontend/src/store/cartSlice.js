@@ -10,63 +10,48 @@ const cartSlice = createSlice({
     name: "cartItems",
     initialState,
     reducers: {
-        setCartItems:(state , action)=>{
+        setCartItems: (state, action) => {
             state.cartItems = action.payload;
         },
         addToCart: (state, action) => {
-            const id = action.payload.id;
-            const exists = state.cartItems.find((p) => p.id === id);
-            if (exists) {
-                exists.qty += 1;
-                return;
-            }
-            else {
-
+            const id = action.payload._id;
+            const exists = state.cartItems.find((p) => p._id === id);
+            if (!exists) {
                 state.cartItems.push({ ...action.payload, qty: 1 })
             }
+
         },
         removeFromCart: (state, action) => {
             const id = action.payload;
-            state.cartItems = state.cartItems.filter((p) => p.id !== id);
-
+            state.cartItems = state.cartItems.filter((p) => p._id !== id);
         },
 
         increaseQty: (state, action) => {
             const id = action.payload;
-            const item = state.cartItems.find((p) => p.id === id);
+            const item = state.cartItems.find((p) => p._id === id);
 
             if (item) {
-                item.qty += 1;
+                item.qty = (item.qty || 0) + 1;
             }
-
-
         },
         decreaseQty: (state, action) => {
             const id = action.payload;
-            const item = state.cartItems.find((p) => p.id === id);
+            const item = state.cartItems.find((p) => p._id === id);
 
             if (item && item.qty > 1) {
                 item.qty -= 1;
             }
 
-
-        },
-        updateCartQty: (state, action) => {
-            const { id, qty } = action.payload;
-            const item = state.cartItems.find((p) => p.id === id);
-
-            if (item) {
-                item.qty = qty;
-            }
         },
 
         clearCart: (state) => {
             state.cartItems = [];
+
         },
 
         checkedCartItems: (state, action) => {
             const { id, checked } = action.payload;
-            const item = state.cartItems.find((p) => p.id === id);
+            const item = state.cartItems.find((p) => p._id === id);
             if (item) {
                 item.checked = checked;
             }
@@ -77,6 +62,9 @@ const cartSlice = createSlice({
 
 
 
-export const { addToCart, removeFromCart, increaseQty, decreaseQty, updateCartQty, clearCart ,checkedCartItems , setCartItems  } = cartSlice.actions
+
+
+
+export const { addToCart, removeFromCart, increaseQty, decreaseQty, updateCartQty, clearCart, checkedCartItems, setCartItems } = cartSlice.actions
 
 export default cartSlice.reducer;

@@ -20,7 +20,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-[#efe6de]">
-      <Header />
+      {/* <Header /> */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-8">
           <h1 className="text-2xl font-semibold mb-4">Contact Us</h1>
@@ -74,6 +74,7 @@ export default function Contact() {
                 Send Message
               </Button>
               <Button
+               className="w-30 bg-gray-400 hover:bg-[#E85C64] hover:text-white text-black"
                 variant="outline"
                 onClick={() => setForm({ name: "", email: "", message: "" })}
               >

@@ -59,7 +59,7 @@ function SignUp() {
 
   return (
     <div className="min-h-screen  bg-[#efe6de]   ">
-      <Header />
+      {/* <Header /> */}
       <div className="flex justify-center items-center pt-5">
         {/* Box which is in middle of page */}
         <div className=" w-full max-w-md mx-3 ">

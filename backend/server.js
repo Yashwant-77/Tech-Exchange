@@ -2,7 +2,8 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import authRouter from './routes/auth.js'
-// import productsRouter from './routes/products.js'
+import productsRouter from './routes/products.js'
+import cartRouter from './routes/cart.js'
 import connectToMongoDB from './db.js'
 import cors from 'cors'
 
@@ -27,7 +28,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRouter)
-// app.use('/api/products', productsRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/cart', cartRouter);
 
 
 app.listen(PORT, () => {

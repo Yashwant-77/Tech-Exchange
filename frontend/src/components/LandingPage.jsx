@@ -33,7 +33,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen  flex flex-col">
       {/* Header */}
-      <Header />
+      {/* <Header /> */}
 
       {/* Hero Section */}
       <section className="py-16 md:py-24  bg-cover  flex-1">

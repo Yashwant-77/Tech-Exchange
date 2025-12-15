@@ -14,13 +14,13 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     cartItems: {
         type: Array,
         default: []
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 })
 

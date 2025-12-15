@@ -1,8 +1,9 @@
-// src/components/AlertBar.jsx
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CheckCircle, XCircle, AlertTriangle, Info } from "lucide-react";
 import { hideAlert } from "../store/alertSlice";
-import { XCircle, CheckCircle, AlertTriangle, Info } from "lucide-react";
+
+
 
 export default function Alert() {
   const dispatch = useDispatch();
@@ -14,14 +15,13 @@ export default function Alert() {
     return () => clearTimeout(t);
   }, [visible, duration, dispatch]);
 
-  if (!visible) return null;
-
   const styles = {
     success: "bg-green-600",
     error: "bg-red-600",
     warning: "bg-yellow-400 text-black",
-    info: "bg-blue-600",
+    info: "bg-blue-400 text-black",
   };
+
   const icons = {
     success: <CheckCircle className="w-5 h-5" />,
     error: <XCircle className="w-5 h-5" />,
@@ -32,18 +32,22 @@ export default function Alert() {
   return (
     <div
       aria-live="assertive"
-      className={`fixed top-0 left-0 w-full z-50 transform transition-transform duration-300 ${styles[type]}`}
-      style={{ boxShadow: "0 6px 18px rgba(0,0,0,0.12)" }}
+      className={`
+        fixed left-0  w-full z-40
+        top-20
+        transform transition-all duration-300 ease-out
+        ${visible ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"}
+        ${styles[type]}
+      `}
     >
-      <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 text-white">
-          <div className="opacity-90">{icons[type]}</div>
-          <div className="text-sm">{message}</div>
+      <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-center gap-4">
+        <div className="flex justify-center items-center gap-3 text-white">
+          {icons[type]}
+          <span className="text-sm">{message}</span>
         </div>
         <button
           onClick={() => dispatch(hideAlert())}
-          className="text-white text-lg font-bold leading-none"
-          aria-label="Close alert"
+          className="text-white text-lg font-bold"
         >
           ✖
         </button>
@@ -51,3 +55,5 @@ export default function Alert() {
     </div>
   );
 }
+
+

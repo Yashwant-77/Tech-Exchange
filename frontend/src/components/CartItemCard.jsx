@@ -2,23 +2,22 @@
 import Button from "./Button";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { removeFromCart, updateCartQty } from "../store/cartSlice";
+import { decreaseQty, increaseQty, removeFromCart, updateCartQty } from "../store/cartSlice";
 import { checkedCartItems } from "../store/cartSlice";
 
 function CartItemCard({ p }) {
   const dispatch = useDispatch();
 
-  const save = (next) => {
-    // setItems(next);
-    // localStorage.setItem("cart", JSON.stringify(next));
-  };
-
   const removeItem = (id) => {
     dispatch(removeFromCart(id));
   };
 
-  const updateQty = (id, qty) => {
-    dispatch(updateCartQty({ id, qty }));
+  const handleIncreseBtn = (id) => {
+    dispatch(increaseQty(id));
+  };
+
+  const handleDecreseBtn = (id) => {
+    dispatch(decreaseQty(id));
   };
 
   const toggleChecked = (id, checked) => {
@@ -29,10 +28,9 @@ function CartItemCard({ p }) {
     
    
     <div
-      key={p.id}
       className="bg-white rounded-lg shadow p-4 flex items-center gap-4"
     >
-      <input  onChange={(e) => toggleChecked(p.id, e.target.checked)}type="checkbox" className="w-6 h-6 accent-[#DD3A44] rounded  border border-gray-400" />
+      <input  onChange={(e) => toggleChecked(p._id, e.target.checked)}type="checkbox" className="w-6 h-6 accent-[#DD3A44] rounded  border border-gray-400" />
       
       <div className="w-28 h-20 bg-gray-100 rounded overflow-hidden flex-shrink-0">
         {p.img ? (
@@ -57,20 +55,20 @@ function CartItemCard({ p }) {
         </div>
         <div className="mt-3 flex items-center gap-3">
           <button
-            onClick={() => updateQty(p.id, Math.max(1, (p.qty || 1) - 1))}
+            onClick={() => handleDecreseBtn(p._id)}
             className="px-3 py-1 bg-gray-200 rounded"
           >
             -
           </button>
           <div className="px-3">{p.qty || 1}</div>
           <button
-            onClick={() => updateQty(p.id, (p.qty || 1) + 1)}
+            onClick={() => handleIncreseBtn(p._id)}
             className="px-3 py-1 bg-gray-200 rounded"
           >
             +
           </button>
           <button
-            onClick={() => removeItem(p.id)}
+            onClick={() => removeItem(p._id)}
             className="ml-4 text-sm text-red-600"
           >
             Remove

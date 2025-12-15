@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Header from "./Header";
+import {  useState } from "react";
 import { IndianRupee, ShoppingBag, FileText, Tag, Images } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { login, logout } from "../store/authSlice";
-import Footer from "./Footer";
+import {  logout } from "../store/authSlice";
 import Loading from "./Loading";
+import Alert from "./Alert";
 
 function SignUp() {
   const {
@@ -19,9 +18,6 @@ function SignUp() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [products, setProducts] = useState([]);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const sellProduct = async (productData) => {
@@ -34,6 +30,16 @@ function SignUp() {
       return;
     }
     try {
+      const imagesArray =
+        typeof productData.images === "string"
+          ? productData.images
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean)
+          : Array.isArray(productData.images)
+          ? productData.images
+          : [];
+
       const res = await fetch("http://localhost:5000/api/products/addproduct", {
         method: "POST",
         headers: {
@@ -41,13 +47,13 @@ function SignUp() {
           "auth-token": token,
         },
         body: JSON.stringify({
-          name: productData.name,
+          name: productData.productName,
           price: productData.price,
           category: productData.category,
           description: productData.description,
           brand: productData.brand,
           location: productData.location,
-          img: productData.img, // base64 or URL
+          images: imagesArray, // base64 or URL
         }),
       });
 
@@ -56,20 +62,26 @@ function SignUp() {
       if (result.success) {
         // Product added successfully
         console.log("Product added:", result.product);
-        alert("Product added successfully!");
-        reset(); // clear form
+
+        reset();
+        alert("Product listed for sale successfully!");
         // optionally navigate to product page or home
+        setLoading(false);
         navigate("/");
-        // setLoading(false);
       } else {
         // Handle error from backend
         console.error("Error adding product:", result.error);
-        alert("Error adding product: " + result.error);
-        // setLoading(false);
+        // dispatch(showAlert({
+        //   type: "error",
+        //   message: result.error || "Failed to list product for sale.",
+        //   duration: 3000,
+        // }));
+        alert(result.error || "Failed to list product for sale.");
+        setLoading(false);
       }
     } catch (error) {
       console.log("server error in adding new product:", error);
-      // setLoading(false);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -77,7 +89,8 @@ function SignUp() {
 
   return (
     <div className="min-h-screen  bg-[#efe6de]   ">
-      <Header />
+      {/* <Header /> */}
+      <Alert />
       {loading ? (
         <Loading />
       ) : (

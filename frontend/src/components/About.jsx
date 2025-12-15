@@ -5,7 +5,7 @@ import Footer from "./Footer";
 export default function About() {
   return (
     <div className="min-h-screen bg-[#efe6de]">
-      <Header />
+      {/* <Header /> */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
           <h1 className="text-3xl font-bold mb-4">About TechExchange</h1>

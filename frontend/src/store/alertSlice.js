@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   visible: false,
   type: "info",      // 'success' | 'error' | 'warning' | 'info'
-  message: "",
+  message: "klklfjdlkjflkjdl",
   duration: 3000,    // ms
 };
 

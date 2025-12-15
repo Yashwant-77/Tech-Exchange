@@ -43,12 +43,12 @@ function Login() {
         navigate("/");
       } else {
         // handle error from backend
-        console.error("❌ Login failed:", result.message);
+        console.error("❌ Login failed:", result.error);
         setError(result.message);
         reset({ password: "" }); // clear only password field
       }
     } catch (error) {
-      console.error("❌ Error:", error.message);
+      console.error("❌ Error:", error);
       setError("An unexpected error occurred. Please try again.");
       reset({ password: "" }); // clear only password field
     }
@@ -56,7 +56,7 @@ function Login() {
 
   return (
     <div className="min-h-screen  bg-[#efe6de] ">
-      <Header />
+      {/* <Header /> */}
       <div className="flex justify-center items-center pt-20">
         {/* Box which is in middle of page */}
         <div className=" w-full max-w-md mx-3 ">

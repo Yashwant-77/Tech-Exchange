@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { body, validationResult } from 'express-validator'
 import User from '../models/User.js'
-import fetchuser from './fetuser.js'
+import fetchuser from './fetchuser.js'
 
 
 // create an express router

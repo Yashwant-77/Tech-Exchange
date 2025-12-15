@@ -2,14 +2,23 @@ import Header from "./Header";
 import ProductItemCard from "./ProductItemCard";
 import Footer from "./Footer";
 import Button from "./Button";
-import products from "./products";
+import { useState, useEffect } from "react";
+// import products from "./products";
 
 
 function Home() {
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/products/getallproducts")
+      .then((response) => response.json())
+      .then((data) => setProducts(data.products))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
  
   return (
     <div className="min-h-screen  bg-[#efe6de] ">
-      <Header />
+      {/* <Header /> */}
       
       <div className="flex justify-between lg:mx-25 my-5 mx-5">
         <div className=" ">
@@ -41,14 +50,14 @@ function Home() {
       </div>
       {/* Add some some functionality about filtering */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-4  lg:px-20 px-5 gap-6 sm:gap-2 mb-5">
-        {products.map((product, index) => (
-          <ProductItemCard key={product.id} product={product} />
+        {products.map((product) => (
+          <ProductItemCard key={product._id} product={product} />
         ))}
       </div>
       <div className="flex justify-center items-center my-20">
-        <Button className="text-white bg-[#dd3a44] hover:bg-[#E85C64]">
+        {/* <Button className="text-white bg-[#dd3a44] hover:bg-[#E85C64]">
           Load More
-        </Button>
+        </Button> */}
       </div>
       <Footer />
     </div>
