@@ -20,7 +20,7 @@ export default function ChatWithSeller() {
   useEffect(() => {
     const fetchSeller = async () => {
       try {
-        const res = await fetch(`/api/auth/getuser`, {
+        const res = await fetch(`https://tech-exchange-backend.onrender.com/api/auth/getuser`, {
           method: "GET",
           headers: { "auth-token": authToken },
         });
@@ -43,7 +43,7 @@ export default function ChatWithSeller() {
     const fetchMessages = async () => {
       try {
         const res = await fetch(
-          `/api/chat/messages/${sellerId}`,
+          `https://tech-exchange-backend.onrender.com/api/chat/messages/${sellerId}`,
           {
             method: "GET",
             headers: { "auth-token": authToken },
@@ -70,7 +70,7 @@ export default function ChatWithSeller() {
     if (!input.trim()) return;
 
     try {
-      const res = await fetch("/api/chat/send", {
+      const res = await fetch("https://tech-exchange-backend.onrender.com/api/chat/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
