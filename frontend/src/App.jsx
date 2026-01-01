@@ -44,7 +44,7 @@ function App() {
       }
 
       try {
-        const response  = await fetch("http://localhost:5000/api/auth/getuser", {
+        const response  = await fetch("https://tech-exchange-backend.onrender.com/api/auth/getuser", {
           method:"GET",
           headers: {
             "Content-Type": "application/json",
@@ -101,7 +101,7 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      await fetch("http://localhost:5000/api/cart", {
+      await fetch("https://tech-exchange-backend.onrender.com/api/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
