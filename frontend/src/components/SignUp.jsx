@@ -23,7 +23,7 @@ function SignUp() {
   const createUser = async (data) => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/createuser",
+        "https://tech-exchange-backend.onrender.com/api/auth/createuser",
         {
           method: "POST",
           headers: {
