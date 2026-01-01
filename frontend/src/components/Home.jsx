@@ -10,7 +10,7 @@ function Home() {
   const [products, setProducts] = useState([])
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products/getallproducts")
+    fetch("https://tech-exchange-backend.onrender.com/api/products/getallproducts")
       .then((response) => response.json())
       .then((data) => setProducts(data.products))
       .catch((error) => console.error("Error fetching products:", error));
