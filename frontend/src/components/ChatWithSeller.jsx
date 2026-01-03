@@ -43,38 +43,51 @@ export default function ChatWithSeller() {
   }, [authToken]);
 
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch(
-          `https://tech-exchange-backend.onrender.com/api/chat/messages/${sellerId}`,
-          {
-            method: "GET",
-            headers: { "auth-token": authToken },
-          }
-        );
-        const data = await res.json();
-        if (data.success) {
-          setMessages(data.messages || []);
-        }
-      } catch (err) {
-        console.error("Error fetching messages:", err);
-      }
-    };
-
-    fetchMessages();
-  }, [sellerId, authToken]);
-
   // Auto scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
 
-  const handleSend = async () => {
+  
+useEffect(() => {
+  if (!authToken || !sellerId || !userId) return;
+  if (userId === sellerId) return;
+
+  socketRef.current = io("https://tech-exchange-backend.onrender.com", {
+    auth: {
+      token: authToken,
+    },
+  });
+
+  socketRef.current.on("connect", () => {
+    console.log("✅ Socket connected");
+  });
+
+  socketRef.current.on("connect_error", (err) => {
+    console.error("❌ Socket error:", err.message);
+  });
+
+  socketRef.current.emit("joinRoom", {
+    otherUserId: sellerId,
+  });
+
+  socketRef.current.on("receiveMessage", (data) => {
+    setMessages((prev) => [...prev, data]);
+  });
+
+  return () => {
+    socketRef.current?.disconnect();
+    socketRef.current = null;
+  };
+}, [authToken, sellerId, userId]);
+
+
+
+  const handleSend = () => {
   if (!input.trim()) return;
 
-     if (!socketRef.current) {
+  if (!socketRef.current) {
     console.error("Socket not connected yet");
     return;
   }
@@ -83,10 +96,10 @@ export default function ChatWithSeller() {
     otherUserId: sellerId,
     message: input,
   });
-      });
 
   setInput("");
 };
+
 
 
   if (loading) {
