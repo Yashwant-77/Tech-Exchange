@@ -8,13 +8,19 @@ import { useState, useEffect } from "react";
 
 function Home() {
   const [products, setProducts] = useState([])
+  const [filter, setFilter] = useState("all")
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products/getallproducts")
+    fetch(`http://localhost:5000/api/products/getproducts/${filter}`)
       .then((response) => response.json())
       .then((data) => setProducts(data.products))
       .catch((error) => console.error("Error fetching products:", error));
-  }, []);
+  }, [filter]);
+
+
+  const handleSelect = (e)=>{
+    setFilter(e.target.value);
+  }
  
   return (
     <div className="min-h-screen  bg-[#efe6de] ">
@@ -32,17 +38,19 @@ function Home() {
             className="text-white px-5  py-2 outline-none border-none"
             name="category"
             id="category-select"
+            value={filter}
+            onChange={handleSelect}
           >
-            <option className="text-black" value="all-products">
+            <option className="text-black" value="all">
               All Products
             </option>
-            <option className="text-black" value="price-low-to-high">
+            <option className="text-black" value="laptop">
               Laptops
             </option>
-            <option className="text-black" value="price-high-to-low">
+            <option className="text-black" value="computer">
               PCs
             </option>
-            <option className="text-black" value="newest-first">
+            <option className="text-black" value="mobile">
               Mobiles
             </option>
           </select>

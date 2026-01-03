@@ -92,7 +92,7 @@ function SignUp() {
                       },
                     })}
                     name="fullname"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                     type="text"
                     placeholder="Enter you full name"
                   />
@@ -119,7 +119,7 @@ function SignUp() {
                       },
                     })}
                     name="email"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3  focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3  focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                     type="email"
                     placeholder="xyz@gmail.com"
                   />
@@ -161,7 +161,7 @@ function SignUp() {
                       },
                     })}
                     name="password"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                     type={showPassword ? "text" : "password"}
                     placeholder="**********"
                   />
@@ -197,7 +197,7 @@ function SignUp() {
                         value === watch("password") || "Passwords do not match",
                     })}
                     name="confirmPassword"
-                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="**********"
                   />

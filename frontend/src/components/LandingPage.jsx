@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { User, Menu, X, Star, Shield, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../store/authSlice";
 import Button from "./Button";
 import Card from "./Card";
 import CardContent from "./CardContent";
@@ -29,6 +31,14 @@ const benefits = [
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+  const handleGuestBtn = () => {
+    dispatch(login({ userData: { name: "Guest User", isGuest: true } }));
+    localStorage.setItem("auth-token", "guest-token");
+    navigate("/");
+  }
 
   return (
     <div className="min-h-screen  flex flex-col">
@@ -60,6 +70,12 @@ export default function LandingPage() {
                 Sign Up
               </Button>
             </div>
+             <Button
+                className="w-full mt-5 bg-[#DD3A44] hover:bg-[#E85C64] text-white"
+                onClick={handleGuestBtn}
+              >
+                Login as a guest
+              </Button>
           </div>
         </div>
       </section>

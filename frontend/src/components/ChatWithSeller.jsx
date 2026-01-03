@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Send, ArrowLeft } from "lucide-react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { io} from 'socket.io-client'
+import { useSelector } from "react-redux";
 
 export default function ChatWithSeller() {
   const { sellerId } = useParams();
@@ -11,16 +13,18 @@ export default function ChatWithSeller() {
   const [input, setInput] = useState("");
   const [seller, setSeller] = useState(null);
   const [loading, setLoading] = useState(true);
+  const socketRef = useRef(null);
+
   const messagesEndRef = useRef(null);
 
   const authToken = localStorage.getItem("auth-token");
-  const userId = localStorage.getItem("userId"); // store this when user logs in
+  const userId = useSelector((state) => state.auth.userData?._id)
 
   // Fetch seller info
   useEffect(() => {
     const fetchSeller = async () => {
       try {
-        const res = await fetch(`/api/auth/getuser`, {
+        const res = await fetch(`http://localhost:5000/api/auth/getuser`, {
           method: "GET",
           headers: { "auth-token": authToken },
         });
@@ -38,59 +42,59 @@ export default function ChatWithSeller() {
     fetchSeller();
   }, [authToken]);
 
-  // Fetch messages
+
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch(
-          `/api/chat/messages/${sellerId}`,
-          {
-            method: "GET",
-            headers: { "auth-token": authToken },
-          }
-        );
-        const data = await res.json();
-        if (data.success) {
-          setMessages(data.messages || []);
-        }
-      } catch (err) {
-        console.error("Error fetching messages:", err);
-      }
-    };
+  if (!authToken || !sellerId) return;
+  if(!userId) return;
+  if (userId === sellerId) return;
 
-    fetchMessages();
-  }, [sellerId, authToken]);
 
-  // Auto scroll to latest message
+  socketRef.current = io("http://localhost:5000", {
+    auth: {
+      token: authToken,
+    },
+  });
+
+  
+
+  // join room
+  socketRef.current.emit("joinRoom", {
+    otherUserId: sellerId,
+  });
+
+  // receive message
+  socketRef.current.on("receiveMessage", (data) => {
+    setMessages((prev) => [...prev, data]);
+  });
+
+  return () => {
+    socketRef.current.disconnect();
+  };
+}, [authToken, sellerId]);
+
+  
+  // // Auto scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+
   const handleSend = async () => {
-    if (!input.trim()) return;
+  if (!input.trim()) return;
 
-    try {
-      const res = await fetch("/api/chat/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": authToken,
-        },
-        body: JSON.stringify({
-          recipientId: sellerId,
-          message: input,
-        }),
-      });
+  if (!socketRef.current) {
+    console.error("Socket not connected yet");
+    return;
+  }
 
-      const data = await res.json();
-      if (data.success) {
-        setMessages([...messages, data.message]);
-        setInput("");
-      }
-    } catch (err) {
-      console.error("Error sending message:", err);
-    }
-  };
+  socketRef.current.emit("sendMessage", {
+    otherUserId: sellerId,
+    message: input,
+  });
+
+  setInput("");
+};
+
 
   if (loading) {
     return (
@@ -102,6 +106,19 @@ export default function ChatWithSeller() {
       </div>
     );
   }
+
+
+  if (userId && sellerId && userId === sellerId) {
+    return (
+      <div className="min-h-screen bg-[#efe6de]">
+        <div className="flex justify-center items-center h-96">
+          <p>Coldjkflkdjlkfjdljlj</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-[#efe6de] flex flex-col">
@@ -162,12 +179,12 @@ export default function ChatWithSeller() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="Type your message..."
               className="flex-1 border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
             />
             <button
               onClick={handleSend}
+              
               className="bg-[#dd3a44] text-white p-2 rounded-xl hover:bg-[#E85C64]"
             >
               <Send className="w-5 h-5" />
