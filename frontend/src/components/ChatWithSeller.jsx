@@ -18,7 +18,7 @@ export default function ChatWithSeller() {
   const messagesEndRef = useRef(null);
 
   const authToken = localStorage.getItem("auth-token");
-  const userId = useSelector((state) => state.auth.userData._id)
+  const userId = useSelector((state) => state.auth.userData?._id)
 
   // Fetch seller info
   useEffect(() => {
@@ -43,99 +43,58 @@ export default function ChatWithSeller() {
   }, [authToken]);
 
 
-//   useEffect(() => {
-//   if (!authToken || !sellerId) return;
-
-//   socketRef.current = io("http://localhost:5000", {
-//     auth: {
-//       token: authToken,
-//     },
-//   });
-
-//   // join room
-//   socketRef.current.emit("joinRoom", {
-//     otherUserId: sellerId,
-//   });
-
-//   // receive message
-//   socketRef.current.on("receiveMessage", (data) => {
-//     setMessages((prev) => [...prev, data]);
-//   });
-
-//   return () => {
-//     socketRef.current.disconnect();
-//   };
-// }, [authToken, sellerId]);
+  useEffect(() => {
+  if (!authToken || !sellerId) return;
+  if(!userId) return;
+  if (userId === sellerId) return;
 
 
-  // Fetch messages
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     try {
-  //       const res = await fetch(
-  //         `/api/chat/messages/${sellerId}`,
-  //         {
-  //           method: "GET",
-  //           headers: { "auth-token": authToken },
-  //         }
-  //       );
-  //       const data = await res.json();
-  //       if (data.success) {
-  //         setMessages(data.messages || []);
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching messages:", err);
-  //     }
-  //   };
+  socketRef.current = io("http://localhost:5000", {
+    auth: {
+      token: authToken,
+    },
+  });
 
-  //   fetchMessages();
-  // }, [sellerId, authToken]);
+  
 
+  // join room
+  socketRef.current.emit("joinRoom", {
+    otherUserId: sellerId,
+  });
+
+  // receive message
+  socketRef.current.on("receiveMessage", (data) => {
+    setMessages((prev) => [...prev, data]);
+  });
+
+  return () => {
+    socketRef.current.disconnect();
+  };
+}, [authToken, sellerId]);
+
+  
   // // Auto scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-//   const handleSend = async () => {
-//     if (!input.trim()) return;
 
-//     try {
-//       const res = await fetch("/api/chat/send", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "auth-token": authToken,
-//         },
-//         body: JSON.stringify({
-//           recipientId: sellerId,
-//           message: input,
-//         }),
-//       });
+  const handleSend = async () => {
+  if (!input.trim()) return;
 
-//       const data = await res.json();
-//       if (data.success) {
-//         setMessages([...messages, data.message]);
-//         setInput("");
-//       }
-//     } catch (err) {
-//       console.error("Error sending message:", err);
-//     }
-//   };
+  if (!socketRef.current) {
+    console.error("Socket not connected yet");
+    return;
+  }
 
-//   const handleSend = async () => {
-//   if (!input.trim()) return;
+  socketRef.current.emit("sendMessage", {
+    otherUserId: sellerId,
+    message: input,
+  });
 
-//   socketRef.current.emit("sendMessage", {
-//     otherUserId: sellerId,
-//     message: input,
-//   });
+  setInput("");
+};
 
-//   setInput("");
-// };
-
-const handleSend = () =>{
-  
-}
 
   if (loading) {
     return (
@@ -147,6 +106,19 @@ const handleSend = () =>{
       </div>
     );
   }
+
+
+  if (userId && sellerId && userId === sellerId) {
+    return (
+      <div className="min-h-screen bg-[#efe6de]">
+        <div className="flex justify-center items-center h-96">
+          <p>Coldjkflkdjlkfjdljlj</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-[#efe6de] flex flex-col">
@@ -207,12 +179,12 @@ const handleSend = () =>{
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="Type your message..."
               className="flex-1 border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
             />
             <button
               onClick={handleSend}
+              
               className="bg-[#dd3a44] text-white p-2 rounded-xl hover:bg-[#E85C64]"
             >
               <Send className="w-5 h-5" />

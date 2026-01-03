@@ -40,71 +40,71 @@ app.use('/api/cart', cartRouter);
 const server = http.createServer(app)
 
 
-// const io = new Server(server , {
-//     cors: {
-//     origin: "*", // frontend URL in production
-//     methods: ["GET", "POST"],
-//   },
-// })
+const io = new Server(server , {
+    cors: {
+    origin: "*", // frontend URL in production
+    methods: ["GET", "POST"],
+  },
+})
 
-// io.use((socket, next) => {
-//   const token = socket.handshake.auth.token;
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
 
-//   if (!token) {
-//     return next(new Error("Authentication error: Token missing"));
-//   }
+  if (!token) {
+    return next(new Error("Authentication error: Token missing"));
+  }
 
-//   try {
-//     const decoded = jwt.verify(token, JWT_SECRET); // use env in real app
-//     socket.userId = decoded.id; // attach user ID
-//     next();
-//   } catch (err) {
-//     next(new Error("Authentication error: Invalid token"));
-//   }
-// });
-
-
-// function getRoomId(userId , otherUserId){
-//     return [userId.userId, otherUserId]
-//       .sort()
-//       .join("_");
-// }
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET); // use env in real app
+    socket.userId = decoded.id; // attach user ID
+    next();
+  } catch (err) {
+    next(new Error("Authentication error: Invalid token"));
+  }
+});
 
 
-// io.on("connection", (socket) => {
-//   // Join room
-//   socket.on("joinRoom", ({ otherUserId }) => {
-//     if(otherUserId === socket.userId) return;
-//     const roomId = getRoomId(socket.userId , otherUserId)
+function getRoomId(userId , otherUserId){
+    return [userId.userId, otherUserId]
+      .sort()
+      .join("_");
+}
 
-//     socket.join(roomId);
-//   });
 
-//   // Send message
-//   socket.on("sendMessage", ({ otherUserId , message }) => {
-//     const roomId = getRoomId(socket.userId , otherUserId)
+io.on("connection", (socket) => {
+  // Join room
+  socket.on("joinRoom", ({ otherUserId }) => {
+    if(otherUserId === socket.userId) return;
+    const roomId = getRoomId(socket.userId , otherUserId)
 
-//     io.to(roomId).emit("receiveMessage", {
-//       senderId: socket.userId,
-//       message,
-//     });
-//   });
+    socket.join(roomId);
+  });
 
-//   // Typing indicator
-//   socket.on("typing", ({otherUserId}) => {
-//     const roomId = getRoomId(socket.userId , otherUserId)
-//     socket.to(roomId).emit("userTyping", socket.userId);
-//   });
+  // Send message
+  socket.on("sendMessage", ({ otherUserId , message }) => {
+    const roomId = getRoomId(socket.userId , otherUserId)
 
-//   socket.on("stopTyping", ({otherUserId}) => {
-//     const roomId = getRoomId(socket.userId , otherUserId)
-//     socket.to(roomId).emit("stopTyping", socket.userId);
-//   });
+    io.to(roomId).emit("receiveMessage", {
+      senderId: socket.userId,
+      message,
+    });
+  });
 
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected:", socket.userId);
-//   });
-// });
+  // Typing indicator
+  socket.on("typing", ({otherUserId}) => {
+    const roomId = getRoomId(socket.userId , otherUserId)
+    socket.to(roomId).emit("userTyping", socket.userId);
+  });
+
+  socket.on("stopTyping", ({otherUserId}) => {
+    const roomId = getRoomId(socket.userId , otherUserId)
+    socket.to(roomId).emit("stopTyping", socket.userId);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.userId);
+  });
+});
 
 
 

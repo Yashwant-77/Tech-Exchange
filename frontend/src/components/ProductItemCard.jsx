@@ -6,6 +6,7 @@ import { CircleCheck, ArrowLeft, ArrowRight } from "lucide-react";
 function ProductItemCard({ product }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cartItems.cartItems);
+  const userId = useSelector((state)=> state.auth.userData?._id)
 
   // ✅ derive state instead of storing it
   const productExistInCart = useMemo(
@@ -15,6 +16,7 @@ function ProductItemCard({ product }) {
 
   // message state
   const [message, setMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false)
 
   const showMessage = (text) => {
     setMessage(text);
@@ -22,8 +24,15 @@ function ProductItemCard({ product }) {
   };
 
   const handleAddToCart = () => {
-    dispatch(addToCart(product));
-    showMessage("Added to Cart");
+    console.log(userId , product.sellerId)
+    if(userId && userId === product.sellerId) {
+      setShowAlert(true);
+    }
+    else{
+
+      dispatch(addToCart(product));
+      showMessage("Added to Cart");
+    }
   };
 
   const handleRemoveFromCart = () => {
@@ -104,6 +113,12 @@ function ProductItemCard({ product }) {
             <div className="flex justify-center mt-2 text-green-600">
               <CircleCheck className="mr-2" />
               {message}
+            </div>
+          )}
+          {showAlert && (
+            <div className="flex justify-center mt-2 text-red-600">
+              <CircleCheck className="mr-2" />
+              Your listed this product !
             </div>
           )}
         </div>
