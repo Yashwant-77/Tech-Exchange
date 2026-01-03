@@ -1,9 +1,9 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { IndianRupee, ShoppingBag, FileText, Tag, Images } from "lucide-react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import {  logout } from "../store/authSlice";
+import { logout } from "../store/authSlice";
 import Loading from "./Loading";
 import Alert from "./Alert";
 
@@ -35,7 +35,7 @@ function SignUp() {
           ? productData.images
               .split(",")
               .map((s) => s.trim())
-              .filter(Boolean)
+              .filter(Boolean) // removes empty strings
           : Array.isArray(productData.images)
           ? productData.images
           : [];
@@ -125,7 +125,7 @@ function SignUp() {
                         required: "This field is required",
                       })}
                       name="productName"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                       type="text"
                       placeholder="Enter name of your product"
                     />
@@ -154,7 +154,7 @@ function SignUp() {
                         },
                       })}
                       name="price"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                       type="text"
                       placeholder="Enter price of the product"
                     />
@@ -181,7 +181,7 @@ function SignUp() {
                         required: "This field is required",
                       })}
                       name="brand"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                       type="text"
                       placeholder="Enter the brand of your product"
                     />
@@ -203,16 +203,17 @@ function SignUp() {
                     {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
                     {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
 
-                    <input
+                    <select
                       {...register("category", {
                         required: "This field is required",
                       })}
-                      // defaultValue="Tech"
                       name="category"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      type="text"
-                      placeholder="Enter the brand of your product"
-                    />
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
+                    >
+                      <option value="laptop">Laptop</option>
+                      <option value="computer">Computer</option>
+                      <option value="mobile">Mobile</option>
+                    </select>
                     {errors.category && (
                       <span className="text-red-500">
                         {errors.category?.message}
@@ -236,7 +237,7 @@ function SignUp() {
                         required: "This field is required",
                       })}
                       name="location"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                       type="text"
                       placeholder="Enter the brand of your product"
                     />
@@ -262,7 +263,7 @@ function SignUp() {
                         required: "This field is required",
                       })}
                       name="description"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                       type="text"
                       placeholder="Enter the brand of your product"
                     />
@@ -284,11 +285,9 @@ function SignUp() {
                     {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
 
                     <input
-                      {...register("images", {
-                        required: "This field is required",
-                      })}
+                      {...register("images")}
                       name="images"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                       type="text"
                       placeholder="Add some images URLs separated by commas"
                     />

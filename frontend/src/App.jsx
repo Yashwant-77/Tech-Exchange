@@ -19,6 +19,8 @@ import Alert from "./components/Alert";
 import EditProduct from "./components/EditProduct";
 import Profile from "./components/Profile";
 import { setCartItems } from "./store/cartSlice";
+import Inbox from "./components/Inbox";
+
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.status);
@@ -142,6 +144,7 @@ useEffect(() => {
         <Route path="/profile" element={isLoggedIn ? <Profile /> : <Login/>} />
         <Route path="/edit-product/:id" element={isLoggedIn ? <EditProduct /> : <Login/>} />
         <Route path="/chat" element={isLoggedIn ? <ChatWithSeller /> : <Login/>} /> 
+        <Route path="/inbox" element={isLoggedIn ? <Inbox /> : <Login/>} /> 
       </Routes>
 
     </div>

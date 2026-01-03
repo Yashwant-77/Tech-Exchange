@@ -59,6 +59,12 @@ function Header() {
             >
               About
             </Link>
+            <Link
+              to="/inbox"
+              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
+            >
+              Inbox
+            </Link>
           </nav>
           <div className="hidden md:flex items-center  space-x-4">
             {!isLoggedIn ? (
@@ -138,18 +144,44 @@ function Header() {
               >
                 About
               </Link>
-              {/* start chatgpt code*/}
-
-              {/* end  */}
-
-              <div className="flex space-x-2 pt-2">
+              <Link
+                to="/inbox"
+                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
+              >
+                Inbox
+              </Link>
+            </div>
+            <div className="">
                 {isLoggedIn ? (
+                  <div className="flex-1 mt-5">
+                    <div className="flex space-x-2 mb-3">
+                      <Link to="/profile" className="w-full"
+                      >
+                      <Button
+                    className="w-full  bg-[#DD3A44] text-white hover:text-[#DD3A44]"
+              
+                  >
+                    Profile
+                  </Button>
+                  </Link>
+                  <Link to="/cart" className="w-full">
+                  
                   <Button
-                    className="flex-1 bg-[#DD3A44] text-white hover:text-[#DD3A44]"
+                    className="w-full bg-[#DD3A44] text-white hover:text-[#DD3A44]"
+                  >
+                    Cart
+                  </Button>
+                  </Link>
+                    </div>
+
+
+                  <Button
+                    className="w-full bg-[#DD3A44] text-white hover:text-[#DD3A44]"
                     onClick={logoutButton}
                   >
                     Logout
                   </Button>
+                  </div>
                 ) : (
                   <>
                     <Button
@@ -167,7 +199,6 @@ function Header() {
                   </>
                 )}
               </div>
-            </div>
           </div>
         )}
       </div>

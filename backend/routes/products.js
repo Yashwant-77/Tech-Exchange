@@ -7,10 +7,17 @@ import { body, validationResult } from 'express-validator';
 const productsRouter = express.Router();
 
 
-productsRouter.get('/getallproducts' , async (req, res) => {
+productsRouter.get('/getproducts/:category' , async (req, res) => {
   try {
     // get all products, newest first
-    const products = await Products.find().sort({ createdAt: -1 });
+    const {category} = req.params
+    let products;
+    if(category === "all"){
+       products = await Products.find().sort({ createdAt: -1 });
+    }
+    else{
+       products = await Products.find({category}).sort({ createdAt: -1 });
+    }
     return res.json({ success: true, products });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -26,7 +33,6 @@ productsRouter.post('/addproduct', fetchuser, [
   body('description', 'Description is required').trim().notEmpty(),
   body('brand', 'Brand is required').trim().notEmpty(),
   body('location', 'Location is required').trim().notEmpty(),
-  body('images', 'At least one image URL is required').isArray({ min: 1 }),
 ], async (req, res) => {
   try {
     // Validate request
@@ -35,9 +41,13 @@ productsRouter.post('/addproduct', fetchuser, [
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    const { name, price, category, description, brand, location, images } = req.body;
+    const { name, price, category, description, brand, location } = req.body;
     const userId = req.user.id;
+    let {images} = req.body;
 
+    if(images.length == 0){
+      images = ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzsf5YV8SmWdxTzRT5kymFn3nGC8NbAszFJw&s"]
+    }
     // Create new product
     const newProduct = new Products({
       name,
