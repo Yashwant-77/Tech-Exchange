@@ -24,7 +24,7 @@ connectToMongoDB();
 
 
 // Allow frontend to access backend APIs
-app.use(cors({ origin: "http://localhost:5173" }))
+app.use(cors({ origin: ["http://localhost:5173" , "https://tech-exchange-frontend.onrender.com"]}))
 
 
 

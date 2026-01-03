@@ -40,7 +40,7 @@ function SignUp() {
           ? productData.images
           : [];
 
-      const res = await fetch("http://localhost:5000/api/products/addproduct", {
+      const res = await fetch("https://tech-exchange-backend.onrender.com/api/products/addproduct", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

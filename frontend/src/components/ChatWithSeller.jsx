@@ -24,7 +24,7 @@ export default function ChatWithSeller() {
   useEffect(() => {
     const fetchSeller = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/auth/getuser`, {
+        const res = await fetch(`https://tech-exchange-backend.onrender.com/api/auth/getuser`, {
           method: "GET",
           headers: { "auth-token": authToken },
         });
@@ -44,36 +44,28 @@ export default function ChatWithSeller() {
 
 
   useEffect(() => {
-  if (!authToken || !sellerId) return;
-  if(!userId) return;
-  if (userId === sellerId) return;
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch(
+          `https://tech-exchange-backend.onrender.com/api/chat/messages/${sellerId}`,
+          {
+            method: "GET",
+            headers: { "auth-token": authToken },
+          }
+        );
+        const data = await res.json();
+        if (data.success) {
+          setMessages(data.messages || []);
+        }
+      } catch (err) {
+        console.error("Error fetching messages:", err);
+      }
+    };
 
+    fetchMessages();
+  }, [sellerId, authToken]);
 
-  socketRef.current = io("http://localhost:5000", {
-    auth: {
-      token: authToken,
-    },
-  });
-
-  
-
-  // join room
-  socketRef.current.emit("joinRoom", {
-    otherUserId: sellerId,
-  });
-
-  // receive message
-  socketRef.current.on("receiveMessage", (data) => {
-    setMessages((prev) => [...prev, data]);
-  });
-
-  return () => {
-    socketRef.current.disconnect();
-  };
-}, [authToken, sellerId]);
-
-  
-  // // Auto scroll to latest message
+  // Auto scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -82,7 +74,7 @@ export default function ChatWithSeller() {
   const handleSend = async () => {
   if (!input.trim()) return;
 
-  if (!socketRef.current) {
+     if (!socketRef.current) {
     console.error("Socket not connected yet");
     return;
   }
@@ -91,6 +83,7 @@ export default function ChatWithSeller() {
     otherUserId: sellerId,
     message: input,
   });
+      });
 
   setInput("");
 };

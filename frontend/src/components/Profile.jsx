@@ -25,10 +25,10 @@ export default function Profile() {
       try {
         const token = localStorage.getItem("auth-token");
         const [boughtRes, soldRes] = await Promise.all([
-          fetch("http://localhost:5000/api/products/bought", {
+          fetch("https://tech-exchange-backend.onrender.com/api/products/bought", {
             headers: { "auth-token": token },
           }),
-          fetch("http://localhost:5000/api/products/sold", {
+          fetch("https://tech-exchange-backend.onrender.com/api/products/sold", {
             headers: { "auth-token": token },
           }),
         ]);

@@ -23,7 +23,7 @@ export default function EditProduct() {
     const fetchProduct = async () => {
       try {
         const token = localStorage.getItem("auth-token");
-        const res = await fetch(`http://localhost:5000/api/products/getproduct/${id}`, {
+        const res = await fetch(`https://tech-exchange-backend.onrender.com/api/products/getproduct/${id}`, {
           headers: { "auth-token": token },
         });
         const data = await res.json();
@@ -58,7 +58,7 @@ export default function EditProduct() {
     setSaving(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const res = await fetch(`http://localhost:5000/api/products/updateproduct/${id}`, {
+      const res = await fetch(`https://tech-exchange-backend.onrender.com/api/products/updateproduct/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
