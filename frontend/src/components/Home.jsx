@@ -11,7 +11,7 @@ function Home() {
   const [filter, setFilter] = useState("all")
 
   useEffect(() => {
-    fetch("https://tech-exchange-backend.onrender.com/api/products/getallproducts")
+    fetch(`https://tech-exchange-backend.onrender.com/api/products/getproducts/${filter}`)
       .then((response) => response.json())
       .then((data) => setProducts(data.products))
       .catch((error) => console.error("Error fetching products:", error));
