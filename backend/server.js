@@ -55,8 +55,8 @@ io.use((socket, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET); // use env in real app
-    socket.userId = decoded.id; // attach user ID
+    const decoded = jwt.verify(token, JWT_SECRET); 
+    socket.userId = decoded.id;
     next();
   } catch (err) {
     next(new Error("Authentication error: Invalid token"));
