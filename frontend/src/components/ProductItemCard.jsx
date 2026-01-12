@@ -56,8 +56,8 @@ function ProductItemCard({ product }) {
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 mt-4 overflow-hidden">
-      <div className="m-3 border-2 border-[#dd3a44] rounded-2xl">
+    <div className="w-full bg-[#1a1a1a] text-white/80 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 mt-4 overflow-hidden">
+      <div className="m-3  rounded-2xl">
         {/* Image */}
         <div className="pt-3 relative h-52 w-full overflow-hidden">
           <img
@@ -82,10 +82,10 @@ function ProductItemCard({ product }) {
 
         {/* Body */}
         <div className="p-5">
-          <h3 className="text-lg font-bold text-gray-800 truncate">
+          <h3 className="text-lg font-bold  truncate">
             {product.name}
           </h3>
-          <p className="text-sm text-gray-500 line-clamp-2">
+          <p className="text-sm  line-clamp-2">
             {product.description}
           </p>
 

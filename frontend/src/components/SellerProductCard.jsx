@@ -34,7 +34,7 @@ export default function SellerProductCard({ product }) {
   };
 
   return (
-    <div className="relative bg-white rounded-lg shadow-md p-4 flex items-center gap-4 hover:shadow-lg transition-shadow">
+    <div className="relative bg-[#1a1a1a] text-white/80 rounded-lg shadow-md p-4 flex items-center gap-4 hover:shadow-lg transition-shadow">
       {/* Product Image */}
       <div className="w-16 h-16 bg-gray-200 rounded overflow-hidden flex-shrink-0">
         {product.images && product.images.length > 0 ? (
@@ -44,7 +44,7 @@ export default function SellerProductCard({ product }) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+          <div className="w-full h-full flex items-center justify-center  text-xs">
             No Image
           </div>
         )}
@@ -52,9 +52,9 @@ export default function SellerProductCard({ product }) {
 
       {/* Product Details */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-sm text-gray-900 truncate">{product.name}</h3>
-        <p className="text-xs text-gray-500">{product.category} • {product.brand}</p>
-        <p className="text-sm font-bold text-gray-900">₹{product.price}</p>
+        <h3 className="font-semibold text-sm truncate">{product.name}</h3>
+        <p className="text-xs ">{product.category} • {product.brand}</p>
+        <p className="text-sm font-bold ">₹{product.price}</p>
       </div>
 
 
@@ -67,8 +67,8 @@ export default function SellerProductCard({ product }) {
       Edit
     </button>
 
-    <button onClick={handleDelete} className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100">
-      <Trash2 size={20} className="text-gray-600 hover:text-red-600" />
+    <button onClick={handleDelete} className="absolute top-2 right-2 p-1 rounded-full ">
+      <Trash2 size={20} className=" hover:text-red-600" />
     </button>
   </div>
       {/* delete button */}

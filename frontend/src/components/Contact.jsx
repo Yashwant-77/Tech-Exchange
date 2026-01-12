@@ -20,24 +20,24 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-[#efe6de]">
+    <div className="min-h-screen ">
       {/* <Header /> */}
       <div className="flex justify-center items-center pt-5 mb-5">
-        <div className="w-full max-w-md mx-3">
-          <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+        <div className="w-full max-w-4xl mx-3">
+          <div className="bg-[#1a1a1a] text-white/80 shadow-xl rounded-2xl overflow-hidden">
             <div className="bg-[#dd3a44] p-8 text-center">
               <h1 className="text-2xl font-bold text-white">Contact Us</h1>
             </div>
             <div className="p-8 space-y-6">
-              <p className="text-gray-600 text-center">
+              <p className=" text-center">
                 Have a question or need help? Send us a message and we'll respond as soon as possible.
               </p>
               <form action="https://formsubmit.co/chouhanyashwant98@gmail.com" method="POST" className="space-y-6">
                 <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Full name <span className="text-red-600">*</span>
                   </label>
-                  <User className="absolute left-3 h-auto w-5 top-10 text-gray-400" />
+                  <User className="absolute left-3 h-auto w-5 top-10" />
                   <input
                     name="name"
                     value={form.name}
@@ -49,10 +49,10 @@ export default function Contact() {
                 </div>
 
                 <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium  mb-1">
                     Email <span className="text-red-600">*</span>
                   </label>
-                  <Mail className="absolute left-3 h-auto w-5 top-10 text-gray-400" />
+                  <Mail className="absolute left-3 h-auto w-5 top-10" />
                   <input
                     name="email"
                     value={form.email}
@@ -65,10 +65,10 @@ export default function Contact() {
                 </div>
 
                 <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium  mb-1">
                     Message <span className="text-red-600">*</span>
                   </label>
-                  <MessageSquare className="absolute left-3 h-auto w-5 top-10 text-gray-400" />
+                  <MessageSquare className="absolute left-3 h-auto w-5 top-10 " />
                   <textarea
                     name="message"
                     value={form.message}
@@ -98,7 +98,7 @@ export default function Contact() {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 }

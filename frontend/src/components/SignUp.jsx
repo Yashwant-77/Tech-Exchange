@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../store/authSlice";
+import Footer from "./Footer";
 
 function SignUp() {
   const {
@@ -58,12 +59,12 @@ function SignUp() {
   };
 
   return (
-    <div className="min-h-screen  bg-[#efe6de]   ">
+    <div className="">
       {/* <Header /> */}
       <div className="flex justify-center items-center pt-5">
         {/* Box which is in middle of page */}
-        <div className=" w-full max-w-md mx-3 ">
-          <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+        <div className=" w-full max-w-lg mx-3 ">
+          <div className="bg-[#1a1a1a] text-white/80 shadow-xl rounded-2xl overflow-hidden">
             {/* Heading box */}
             <div className="bg-[#dd3a44] p-8 text-center">
               <h1 className="text-2xl font-bold text-white">Create Account</h1>
@@ -78,11 +79,11 @@ function SignUp() {
                 <div className="relative">
                   <label
                     htmlFor="fullname"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium  mb-1 "
                   >
                     Full Name <span className="text-red-600">*</span>
                   </label>
-                  <User className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                  <User className="absolute left-3  h-auto w-5 top-10 " />
                   <input
                     {...register("fullname", {
                       required: "This field is required",
@@ -105,11 +106,11 @@ function SignUp() {
                 <div className="relative">
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium  mb-1"
                   >
                     Email <span className="text-red-600">*</span>
                   </label>
-                  <Mail className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
+                  <Mail className="absolute left-3 h-auto w-5 top-10  " />
                   <input
                     {...register("email", {
                       required: "This field is required",
@@ -132,20 +133,20 @@ function SignUp() {
                 <div className="relative">
                   <label
                     htmlFor="Password"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium mb-1"
                   >
                     Password <span className="text-red-600">*</span>
                   </label>
-                  <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
+                  <Lock className="absolute left-3 h-auto w-5 top-10" />
                   {showPassword ? (
                     <Eye
                       onClick={() => setShowPassword(false)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400 "
+                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 "
                     />
                   ) : (
                     <EyeOff
                       onClick={() => setShowPassword(true)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400"
+                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 "
                     />
                   )}
 
@@ -174,20 +175,20 @@ function SignUp() {
                 <div className="relative">
                   <label
                     htmlFor="confirmPassword"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium  mb-1"
                   >
                     Confirm Password <span className="text-red-600">*</span>
                   </label>
-                  <Lock className="absolute left-3 h-auto w-5 top-10 text-gray-400 " />
+                  <Lock className="absolute left-3 h-auto w-5 top-10 " />
                   {showConfirmPassword ? (
                     <Eye
                       onClick={() => setShowConfirmPassword(false)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400 "
+                      className="absolute cursor-pointer right-3 h-auto w-5 top-10  "
                     />
                   ) : (
                     <EyeOff
                       onClick={() => setShowConfirmPassword(true)}
-                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 text-gray-400"
+                      className="absolute cursor-pointer right-3 h-auto w-5 top-10 "
                     />
                   )}
                   <input
@@ -224,6 +225,7 @@ function SignUp() {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }

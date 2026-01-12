@@ -41,26 +41,26 @@ export default function Inbox() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#efe6de]">
+      <div className="min-h-screen  text-white/80 ">
         {/* <Header /> */}
         <div className="flex justify-center items-center h-96">
           <p>Loading inbox...</p>
         </div>
-        <Footer />
+        
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#efe6de]">
+    <div className="min-h-screen text-white/80">
       {/* <Header /> */}
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-6">Inbox</h1>
 
         {conversations.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-8 text-center">
+          <div className="bg-[#1a1a1a] text-white/90 rounded-lg shadow p-8 text-center">
             <MessageCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <p className="text-gray-500">No conversations yet.</p>
+            <p className="">No conversations yet.</p>
             <p className="text-sm text-gray-400">Buyers who message you will appear here.</p>
           </div>
         ) : (
@@ -86,7 +86,6 @@ export default function Inbox() {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 }

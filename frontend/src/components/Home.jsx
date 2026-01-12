@@ -23,11 +23,11 @@ function Home() {
   }
  
   return (
-    <div className="min-h-screen  bg-[#efe6de] ">
+    <div className="min-h-screen   ">
       {/* <Header /> */}
       
       <div className="flex justify-between lg:mx-25 my-5 mx-5">
-        <div className=" ">
+        <div className="text-white/80">
           <h1 className="text-3xl font-semibold">All Listed Products</h1>
           <p className="">
             To buy products go to cart and process from there!
@@ -41,6 +41,8 @@ function Home() {
             value={filter}
             onChange={handleSelect}
           >
+      
+
             <option className="text-black" value="all">
               All Products
             </option>
@@ -53,6 +55,7 @@ function Home() {
             <option className="text-black" value="mobile">
               Mobiles
             </option>
+           
           </select>
         </div>
       </div>
@@ -67,7 +70,7 @@ function Home() {
           Load More
         </Button> */}
       </div>
-      <Footer />
+      
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IndianRupee, ShoppingBag, FileText, Tag, Images } from "lucide-react";
+import { IndianRupee, ShoppingBag, FileText, Tag, Images , Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -88,7 +88,7 @@ function SignUp() {
   };
 
   return (
-    <div className="min-h-screen  bg-[#efe6de]   ">
+    <div className="min-h-screen  text-white/80   ">
       {/* <Header /> */}
       <Alert />
       {loading ? (
@@ -96,8 +96,8 @@ function SignUp() {
       ) : (
         <div className="flex justify-center items-center pt-5 ">
           {/* Box which is in middle of page */}
-          <div className=" w-full max-w-md mx-3 ">
-            <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+          <div className=" w-full max-w-4xl mx-3 ">
+            <div className="bg-[#1a1a1a] shadow-xl rounded-2xl overflow-hidden">
               {/* Heading box */}
               <div className="bg-[#dd3a44] p-8 text-center">
                 <h1 className="text-2xl font-bold text-white">
@@ -114,11 +114,11 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="productName"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium  mb-1"
                     >
                       Product Name <span className="text-red-600">*</span>
                     </label>
-                    <ShoppingBag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    <ShoppingBag className="absolute left-3  h-auto w-5 top-10 " />
 
                     <input
                       {...register("productName", {
@@ -139,11 +139,11 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="price"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
                     >
                       Price <span className="text-red-600">*</span>
                     </label>
-                    <IndianRupee className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    <IndianRupee className="absolute left-3  h-auto w-5 top-10 " />
 
                     <input
                       {...register("price", {
@@ -168,11 +168,11 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="brand"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium mb-1"
                     >
                       Brand <span className="text-red-600">*</span>
                     </label>
-                    <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    <Tag className="absolute left-3  h-auto w-5 top-10 " />
                     {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
                     {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
 
@@ -195,11 +195,11 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="category"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium  mb-1"
                     >
                       Category <span className="text-red-600">*</span>
                     </label>
-                    <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    <Tag className="absolute left-3  h-auto w-5 top-10 " />
                     {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
                     {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
 
@@ -208,9 +208,9 @@ function SignUp() {
                         required: "This field is required",
                       })}
                       name="category"
-                      className="pl-10 w-full border border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
+                      className="pl-10 w-full border bg-[#1a1a1a] border-gray-300 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
                     >
-                      <option value="laptop">Laptop</option>
+                      <option  value="laptop">Laptop</option>
                       <option value="computer">Computer</option>
                       <option value="mobile">Mobile</option>
                     </select>
@@ -224,13 +224,12 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="location"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium  mb-1"
                     >
                       Location <span className="text-red-600">*</span>
                     </label>
-                    <Tag className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
-                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
-                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    <Star className="absolute left-3  h-auto w-5 top-10 " />
+                    
 
                     <input
                       {...register("location", {
@@ -250,11 +249,11 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="description"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium  mb-1"
                     >
                       Description <span className="text-red-600">*</span>
                     </label>
-                    <FileText className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
+                    <FileText className="absolute left-3  h-auto w-5 top-10 " />
                     {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
                     {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
 
@@ -276,13 +275,13 @@ function SignUp() {
                   <div className="relative">
                     <label
                       htmlFor="images"
-                      className="block text-sm font-medium text-gray-700 mb-1"
+                      className="block text-sm font-medium  mb-1"
                     >
                       Images <span className="text-red-600">*</span>
                     </label>
-                    <Images className="absolute left-3  h-auto w-5 top-10 text-gray-400" />
-                    {/* <Star className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
-                    {/* <Award className="absolute left-3  h-auto w-5 top-10 text-gray-400" /> */}
+                    <Images className="absolute left-3  h-auto w-5 top-10 " />
+                    
+                    
 
                     <input
                       {...register("images")}
