@@ -50,7 +50,7 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#efe6de]">
+      <div className="min-h-screen ">
         <div className="flex justify-center items-center h-96">
           <p>Loading profile...</p>
         </div>

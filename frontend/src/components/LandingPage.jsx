@@ -30,7 +30,7 @@ export default function LandingPage() {
       <section className="py-16 md:py-24  bg-cover text-white/80   flex-1">
         <div className="container flex flex-col md:flex-row mx-auto px-4">
 
-          <div className="flex-1 text-center ">
+          <div className="flex-1 flex flex-col justify-center items-center">
              <h1 className="text-4xl md:text-6xl font-bold text-white/80 mb-6">
               <span className="text-[#DD3A44]">TechExchange</span>
             </h1>
