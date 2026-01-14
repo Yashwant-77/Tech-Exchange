@@ -31,15 +31,16 @@ export default function LandingPage() {
         <div className="container flex flex-col md:flex-row mx-auto px-4">
 
           <div className="flex-1 flex flex-col justify-center items-center">
+
+
              <h1 className="text-4xl md:text-6xl font-bold text-white/80 mb-6">
               <span className="text-[#DD3A44]">TechExchange</span>
             </h1>
-            <p className="text-xl  mb-10 max-w-2xl ">
+
+
+            <p className="text-xl   mb-10 ">
               "Where your old products find new homes !"
             </p>
-
-            
-            
 
           </div>
           <div className="flex-1 ms-5">
