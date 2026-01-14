@@ -20,6 +20,8 @@ import EditProduct from "./components/EditProduct";
 import Profile from "./components/Profile";
 import { setCartItems } from "./store/cartSlice";
 import Inbox from "./components/Inbox";
+import colors from "./assests/colors.js";
+import Footer from "./components/Footer.jsx";
 
 
 function App() {
@@ -130,7 +132,7 @@ useEffect(() => {
     
 
   return (
-    <div className="bg-[#efe6de]">
+    <div className={`bg-[#121212]`}>
     <Header />
     <Alert/>
       <Routes>
@@ -146,7 +148,7 @@ useEffect(() => {
         <Route path="/chat" element={isLoggedIn ? <ChatWithSeller /> : <Login/>} /> 
         <Route path="/inbox" element={isLoggedIn ? <Inbox /> : <Login/>} /> 
       </Routes>
-
+      <Footer/>
     </div>
   );
 }

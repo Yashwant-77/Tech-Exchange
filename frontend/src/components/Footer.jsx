@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-12">
+    <footer className="bg-[#1a1a1a] text-white/80 py-12 mt-20">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="flex items-center  space-x-2 mb-4">
               <Link to="/">
                 <span className="text-xl font-bold text-white">
                   TechExchange
@@ -14,8 +14,7 @@ function Footer() {
               </Link>
             </div>
             <p className="mb-4">
-              The trusted marketplace for buying and selling quality tech
-              products.
+              "Where you old products finds new homes !"
             </p>
             <div className="flex space-x-4">
               <div className="bg-gray-800 p-2 rounded-full">
@@ -55,31 +54,7 @@ function Footer() {
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="text-white font-semibold mb-4">Categories</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/electronics" className="hover:text-white">
-                  Electronics
-                </Link>
-              </li>
-              <li>
-                <Link to="/computers" className="hover:text-white">
-                  Computers
-                </Link>
-              </li>
-              <li>
-                <Link to="/audio" className="hover:text-white">
-                  Audio
-                </Link>
-              </li>
-              <li>
-                <Link to="/wearables" className="hover:text-white">
-                  Wearables
-                </Link>
-              </li>
-            </ul>
-          </div>
+        
           <div>
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-2">

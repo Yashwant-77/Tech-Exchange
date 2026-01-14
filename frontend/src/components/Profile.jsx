@@ -50,7 +50,7 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#efe6de]">
+      <div className="min-h-screen ">
         <div className="flex justify-center items-center h-96">
           <p>Loading profile...</p>
         </div>
@@ -60,32 +60,32 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#efe6de]">
+    <div className="min-h-screen ">
       <div className="container mx-auto px-4 py-8">
         {/* User Info Section */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h1 className="text-2xl font-bold mb-4">My Profile</h1>
+        <div className="bg-[#1a1a1a] text-white/80 rounded-lg shadow p-6 mb-8">
+          <h1 className="text-2xl font-bold mb-4 ">My Profile</h1>
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Full Name
               </label>
               <p className="mt-1 text-lg">{user?.fullname || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Email
               </label>
               <p className="mt-1 text-lg">{user?.email || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Phone
               </label>
               <p className="mt-1 text-lg">{user?.phone || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium ">
                 Location
               </label>
               <p className="mt-1 text-lg">{user?.location || "N/A"}</p>
@@ -101,10 +101,10 @@ export default function Profile() {
 
         {/* Sold Products Section */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Products I've Sold</h2>
+          <h2 className="text-xl text-white/80 font-semibold mb-4">Products I've Sold</h2>
           {soldProducts.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-6 text-center">
-              <p className="text-gray-500">No products sold yet.</p>
+            <div className="bg-[#1a1a1a] text-white/80 rounded-lg shadow p-6 text-center">
+              <p className="">No products sold yet.</p>
               <button
                 onClick={() => navigate("/sell")}
                 className="mt-4 bg-[#dd3a44] text-white px-4 py-2 rounded hover:bg-[#E85C64]"
@@ -123,10 +123,10 @@ export default function Profile() {
 
         {/* Bought Products Section */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Products I've Bought</h2>
+          <h2 className="text-xl text-white/80 font-semibold mb-4">Products I've Bought</h2>
           {boughtProducts.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-6 text-center">
-              <p className="text-gray-500">No products bought yet.</p>
+            <div className="bg-[#1a1a1a] rounded-lg shadow p-6 text-center">
+              <p className="text-white/80">No products bought yet.</p>
               <button
                 onClick={() => navigate("/")}
                 className="mt-4 bg-[#dd3a44] text-white px-4 py-2 rounded hover:bg-[#E85C64]"
@@ -143,7 +143,7 @@ export default function Profile() {
           )}
         </div>
       </div>
-      <Footer />
+
     </div>
   );
 }

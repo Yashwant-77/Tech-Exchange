@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Button from "./Button";
 import { logout } from "../store/authSlice";
+import colors from "../assests/colors.js";
 
 function Header() {
   const isLoggedIn = useSelector((state) => state.auth.status);
@@ -20,14 +21,15 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#efe6de] shadow-sm">
+    <header className={`sticky top-0 z-50 bg-[#1A1A1A]  shadow-sm `}>
+  
       <div className="container mx-auto px-2 py-4">
         <div className="flex items-center justify-between">
           <Link to="/">
             <div className="flex items-center space-x-2">
               {/* <div className="bg-blue-600 w-8 h-8 rounded-lg"></div> */}
 
-              <span className="text-3xl  font-bold font-serif text-[#DD3A44] ">
+              <span className={`text-3xl  font-bold font-serif ${colors.textColor}`}>
                 TechExchange
               </span>
             </div>
@@ -35,34 +37,30 @@ function Header() {
           <nav className="hidden md:flex space-x-8 mx-4">
             <Link
               to="/"
-              className="text-gray-600 hover:text-[#DD3A44] font-medium"
+              className={` text-white/80 hover:text-[#DD3A44] font-medium`}
             >
               Home
             </Link>
             <Link
               to="/sell"
-              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-            >
+              className={` text-white/80 hover:text-[#DD3A44] font-medium`}            >
               Sell
             </Link>
 
             <Link
               to="/contact" 
-              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-            >
+              className={` text-white/80 hover:text-[#DD3A44] font-medium`}          >
               Contact
             </Link>
 
             <Link
               to="/about"
-              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-            >
+              className={` text-white/80 hover:text-[#DD3A44] font-medium`}            >
               About
             </Link>
             <Link
               to="/inbox"
-              className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-            >
+              className={` text-white/80 hover:text-[#DD3A44] font-medium`}           >
               Inbox
             </Link>
           </nav>
@@ -70,7 +68,7 @@ function Header() {
             {!isLoggedIn ? (
               <>
                 <Button
-                  className="w-30 bg-[#DD3A44] hover:bg-[#E85C64] text-white "
+                  className={`w-30 bg-[#DD3A44] hover:bg-[#E85C64] text-white`}
                   onClick={() => navigate("/login")}
                 >
                   Login
@@ -84,10 +82,10 @@ function Header() {
               </>
             ) : (
               <div className="flex justify-center space-x-5 items-center">
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center text-white/80">
                   <p>{cartItems.length}</p>
                   <Link to="/cart">
-                    <ShoppingCart className="cursor-pointer" />
+                    <ShoppingCart className="cursor-pointer " />
                   </Link>
                 </div>
                 <div className="rounded-full p-3 bg-[#DD3A44]">
@@ -106,7 +104,7 @@ function Header() {
             )}
           </div>
           <Button
-            className="md:hidden px-2 py-2"
+            className="md:hidden px-2 py-2 text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -121,33 +119,30 @@ function Header() {
             <div className="flex flex-col space-y-3">
               <Link
                 to="/"
-                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
+                className="text-white/80 hover:text-[#DD3A44]  font-medium"
               >
                 Home
               </Link>
 
               <Link
                 to="/sell" 
-                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
+                className="text-white/80 hover:text-[#DD3A44]  font-medium"
               >
                 Sell
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-              >
+                className="text-white/80 hover:text-[#DD3A44]  font-medium"              >
                 Contact
               </Link>
               <Link
                 to="/about"
-                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-              >
+                className="text-white/80 hover:text-[#DD3A44]  font-medium"              >
                 About
               </Link>
               <Link
                 to="/inbox"
-                className="text-gray-600 hover:text-[#DD3A44]  font-medium"
-              >
+                className="text-white/80 hover:text-[#DD3A44]  font-medium"              >
                 Inbox
               </Link>
             </div>
@@ -184,7 +179,35 @@ function Header() {
                   </div>
                 ) : (
                   <>
-                    <Button
+
+                  {/* experimenting */}
+                   <div className="flex-1 mt-5">
+                    <div className="flex space-x-2 mb-3">
+                      <Link to="/login" className="w-full"
+                      >
+                      <Button
+                    className="w-full  bg-[#DD3A44] text-white hover:text-[#DD3A44]"
+              
+                  >
+                    Login
+                  </Button>
+                  </Link>
+                  <Link to="/signup" className="w-full">
+                  
+                  <Button
+                    className="w-full bg-[#DD3A44] text-white hover:text-[#DD3A44]"
+                  >
+                    Sign up 
+                  </Button>
+                  </Link>
+                    </div>
+
+
+                 
+                  </div>
+
+                  {/* change the styling here */}
+                    {/* <Button
                       className="flex-1  bg-[#DD3A44] text-white hover:text-[#DD3A44]"
                       onClick={() => navigate("/login")}
                     >
@@ -195,7 +218,7 @@ function Header() {
                       onClick={() => navigate("/signup")}
                     >
                       Sign Up
-                    </Button>
+                    </Button> */}
                   </>
                 )}
               </div>
