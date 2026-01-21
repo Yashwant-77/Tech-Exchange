@@ -8,7 +8,9 @@ import connectToMongoDB from './db.js'
 import cors from 'cors'
 import http from 'http'
 import jwt from 'jsonwebtoken'
-import {Server} from 'socket.io'
+import { Server } from 'socket.io'
+import Message from './models/Message.js'
+import chatRouter from './routes/chat.js'
 
 // env Configurations
 dotenv.config();
@@ -16,7 +18,7 @@ dotenv.config();
 // Initializations
 const app = express();
 const PORT = process.env.PORT || 5000;
-const  JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET
 
 // Connect to Database
 connectToMongoDB();
@@ -24,7 +26,7 @@ connectToMongoDB();
 
 
 // Allow frontend to access backend APIs
-app.use(cors({ origin: "http://localhost:5173" }))
+app.use(cors({ origin: "*" }))
 
 
 
@@ -35,81 +37,90 @@ app.use(express.json());
 app.use('/api/auth', authRouter)
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/chat', chatRouter)
 
 
+// socket io server
 const server = http.createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
-
-const io = new Server(server , {
-    cors: {
-    origin: "*", // frontend URL in production
-    methods: ["GET", "POST"],
-  },
-})
 
 io.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-
-  if (!token) {
-    return next(new Error("Authentication error: Token missing"));
-  }
-
   try {
-    const decoded = jwt.verify(token, JWT_SECRET); // use env in real app
-    socket.userId = decoded.id; // attach user ID
+    const token = socket.handshake.auth.token;
+
+    if (!token) {
+      return next(new Error("Authentication token missing"))
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    socket.user = decoded.user;
+
     next();
-  } catch (err) {
-    next(new Error("Authentication error: Invalid token"));
   }
-});
+  catch (err) {
+    next(new Error("Authentication failed"))
+  }
+})
 
 
-function getRoomId(userId , otherUserId){
-    return [userId.userId, otherUserId]
-      .sort()
-      .join("_");
+function getChatId(user1, user2) {
+  return user1 < user2
+    ? `${user1}_${user2}`
+    : `${user2}_${user1}`;
 }
 
+io.on('connection', (socket) => {
+  console.log("a user connected");
 
-io.on("connection", (socket) => {
-  // Join room
-  socket.on("joinRoom", ({ otherUserId }) => {
-    if(otherUserId === socket.userId) return;
-    const roomId = getRoomId(socket.userId , otherUserId)
 
-    socket.join(roomId);
-  });
+  socket.on("joinRoom", async ({ sellerId }) => {
+    console.log(`${sellerId} is joining the group`)
 
-  // Send message
-  socket.on("sendMessage", ({ otherUserId , message }) => {
-    const roomId = getRoomId(socket.userId , otherUserId)
+    const chatId = getChatId(socket.user.id, sellerId);
 
-    io.to(roomId).emit("receiveMessage", {
-      senderId: socket.userId,
-      message,
-    });
-  });
+    await socket.join(chatId);
 
-  // Typing indicator
-  socket.on("typing", ({otherUserId}) => {
-    const roomId = getRoomId(socket.userId , otherUserId)
-    socket.to(roomId).emit("userTyping", socket.userId);
-  });
+    // send to all
+    // io.to(ROOM).emit("roomNotice" , userName);
 
-  socket.on("stopTyping", ({otherUserId}) => {
-    const roomId = getRoomId(socket.userId , otherUserId)
-    socket.to(roomId).emit("stopTyping", socket.userId);
-  });
+    // broadcast to all except sender
+    socket.to(chatId).emit("roomNotice", {
+      userId: socket.user.id,
+      message: "joined the chat",
+    })
+  })
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.userId);
-  });
-});
+  socket.on("chatMessage", async ({ sellerId, text }) => {
+    try {
+      const chatId = getChatId(socket.user.id, sellerId);
+      const message = await Message.create({
+        chatId,
+        senderId: socket.user.id,
+        receiverId: sellerId,
+        text,
+      });
+      io.to(chatId).emit("chatMessage", message)
+
+    } catch (error) {
+      socket.emit("errorMessage", "Message could not be sent");
+    }
+
+  })
+
+})
+
+
 
 
 
 
 
 server.listen(PORT, () => {
-    console.log(`Tech Exchange server is running on http://localhost:${PORT}`)
+  console.log(`Tech Exchange server is running on http://localhost:${PORT}`)
 })

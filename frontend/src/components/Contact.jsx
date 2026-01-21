@@ -20,8 +20,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen ">
-      {/* <Header /> */}
+    <div className="">
       <div className="flex justify-center items-center pt-5 mb-5">
         <div className="w-full max-w-4xl mx-3">
           <div className="bg-[#1a1a1a] text-white/80 shadow-xl rounded-2xl overflow-hidden">

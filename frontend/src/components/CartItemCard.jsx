@@ -28,42 +28,43 @@ function CartItemCard({ p }) {
     
    
     <div
-      className="bg-white rounded-lg shadow p-4 flex items-center gap-4"
+      className="bg-[#1a1a1a] text-white rounded-lg shadow p-4 flex items-center gap-4"
     >
-      <input  onChange={(e) => toggleChecked(p._id, e.target.checked)}type="checkbox" className="w-6 h-6 accent-[#DD3A44] rounded  border border-gray-400" />
+      {/* checkbox */}
+      <input  onChange={(e) => toggleChecked(p._id, e.target.checked)}type="checkbox" className="max-w-6 min-h-6   accent-[#DD3A44] rounded  border border-gray-400" />
       
-      <div className="w-28 h-20 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-        {p.img ? (
+
+      {/* image */}
+      <div className="w-28 h-20 bg-[#1a1a1a] text-white rounded overflow-hidden flex-shrink-0">
           <img
-            src={p.img}
+            src={p.images[0] ?? "https://img.freepik.com/free-photo/modern-stationary-collection-arrangement_23-2149309649.jpg"}
             alt={p.name}
             className="w-full h-full object-cover"
           />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            Image
-          </div>
-        )}
       </div>
+
+
       <div className="flex-1">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col md:flex-row justify-between items-start">
           <div>
             <div className="font-semibold">{p.name}</div>
-            <div className="text-sm text-gray-500">{p.brand || p.category}</div>
+            <div className="text-sm text-white/80">{p.brand || p.category}</div>
           </div>
           <div className="text-lg font-bold">₹{p.price}</div>
         </div>
+
+        {/* buttons */}
         <div className="mt-3 flex items-center gap-3">
           <button
             onClick={() => handleDecreseBtn(p._id)}
-            className="px-3 py-1 bg-gray-200 rounded"
+            className="px-3 py-1 bg-[#DD3a44] rounded"
           >
             -
           </button>
           <div className="px-3">{p.qty || 1}</div>
           <button
             onClick={() => handleIncreseBtn(p._id)}
-            className="px-3 py-1 bg-gray-200 rounded"
+            className="px-3 py-1 bg-[#dd3a44] rounded"
           >
             +
           </button>
@@ -73,7 +74,7 @@ function CartItemCard({ p }) {
           >
             Remove
           </button>
-          <Link className="ml-auto" to="/chat">
+          <Link className="ml-auto" to={`/chat/product/${p._id}`}>
             <Button className="bg-[#DD3A44] text-sm text-white ">
               Chat with Seller
             </Button>

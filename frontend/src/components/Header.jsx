@@ -34,7 +34,7 @@ function Header() {
               </span>
             </div>
           </Link>
-          <nav className="hidden md:flex space-x-8 mx-4">
+          <nav className="hidden lg:flex space-x-8 mx-4">
             <Link
               to="/"
               className={` text-white/80 hover:text-[#DD3A44] font-medium`}
@@ -64,7 +64,7 @@ function Header() {
               Inbox
             </Link>
           </nav>
-          <div className="hidden md:flex items-center  space-x-4">
+          <div className="hidden lg:flex items-center  space-x-4">
             {!isLoggedIn ? (
               <>
                 <Button
@@ -104,7 +104,7 @@ function Header() {
             )}
           </div>
           <Button
-            className="md:hidden px-2 py-2 text-white"
+            className="lg:hidden px-2 py-2 text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
@@ -115,7 +115,7 @@ function Header() {
           </Button>
         </div>
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t mt-2 ">
+          <div className="lg:hidden py-4 border-t mt-2 ">
             <div className="flex flex-col space-y-3">
               <Link
                 to="/"
