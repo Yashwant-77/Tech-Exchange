@@ -4,6 +4,7 @@ import ChatCard from "./ChatCard.jsx";
 import { useParams } from "react-router-dom";
 import MessageCard from "./MessageCard.jsx";
 import { useSelector } from "react-redux";
+import { io } from "socket.io-client";
 
 function ChatWithSeller() {
   const socketRef = useRef(null);
