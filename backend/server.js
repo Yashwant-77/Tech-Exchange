@@ -27,7 +27,7 @@ connectToMongoDB();
 
 // Allow frontend to access backend APIs
 // app.use(cors({ origin: ["http://localhost:5173" , "https://tech-exchange-frontend.onrender.com"]}))
-app.use(cors({ origin: "https://tech-exchange-frontend.onrender.com"}))
+app.use(cors({ origin: "*"}))
 
 
 
@@ -45,7 +45,7 @@ app.use('/api/chat', chatRouter)
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: "https://tech-exchange-frontend.onrender.com",
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
