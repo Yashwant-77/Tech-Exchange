@@ -43,5 +43,34 @@ cartRouter.post('/',
 
 
 
+cartRouter.get("/getCartItems", fetchuser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).select("cartItems");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      cartItems: user.cartItems || [],
+    });
+  } catch (error) {
+    console.error("Get cart error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+
+
+
 
 export default cartRouter;

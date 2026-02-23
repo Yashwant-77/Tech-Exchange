@@ -22,6 +22,7 @@ import { setCartItems } from "./store/cartSlice";
 import Inbox from "./components/Inbox";
 import colors from "./assests/colors.js";
 import Footer from "./components/Footer.jsx";
+import WorkInProgress from "./components/WorkInProgress.jsx";
 
 
 function App() {
@@ -132,7 +133,7 @@ useEffect(() => {
     
 
   return (
-    <div className={`bg-[#121212]`}>
+    <div className={`bg-[#121212] min-h-screen`}>
     <Header />
     <Alert/>
       <Routes>
@@ -144,11 +145,12 @@ useEffect(() => {
         <Route path="/contact" element={isLoggedIn ? <Contact /> : <Login/>} />
         <Route path="/cart" element={isLoggedIn ? <Cart /> : <Login/>} />
         <Route path="/profile" element={isLoggedIn ? <Profile /> : <Login/>} />
+        <Route path="/edit-profile" element={isLoggedIn ? < WorkInProgress/> : <Login/>} />
         <Route path="/edit-product/:id" element={isLoggedIn ? <EditProduct /> : <Login/>} />
-        <Route path="/chat" element={isLoggedIn ? <ChatWithSeller /> : <Login/>} /> 
+        <Route path="/chat/product/:productId" element={isLoggedIn ? <ChatWithSeller /> : <Login/>} /> 
+        <Route path="/chat/user/:senderId" element={isLoggedIn ? <ChatWithSeller /> : <Login/>} /> 
         <Route path="/inbox" element={isLoggedIn ? <Inbox /> : <Login/>} /> 
       </Routes>
-      <Footer/>
     </div>
   );
 }

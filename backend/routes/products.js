@@ -11,14 +11,21 @@ productsRouter.get('/getproducts/:category' , async (req, res) => {
   try {
     // get all products, newest first
     const {category} = req.params
+    const page = req.query.page || 1;
+    const limit = 8;
+    const skip =  (page - 1) * limit;
+    let totalProducts;
     let products;
     if(category === "all"){
-       products = await Products.find().sort({ createdAt: -1 });
+      totalProducts = await Products.countDocuments();
+      products = await Products.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
     }
     else{
-       products = await Products.find({category}).sort({ createdAt: -1 });
+      totalProducts = await  Products.countDocuments({category})
+      products = await Products.find({category}).sort({ createdAt: -1 }).skip(skip).limit(limit);
     }
-    return res.json({ success: true, products });
+    const totalPages = Math.ceil(totalProducts/limit);
+    return res.json({ success: true, products ,  totalPages});
   } catch (error) {
     console.error('Error fetching products:', error);
     return res.status(500).json({ success: false, error: 'Internal Server Error' });

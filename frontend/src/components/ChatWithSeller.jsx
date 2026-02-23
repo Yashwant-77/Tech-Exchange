@@ -1,58 +1,70 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Send, ArrowLeft } from "lucide-react";
-import Header from "./Header";
-import Footer from "./Footer";
-import { io} from 'socket.io-client'
+import { useState, useEffect, useRef } from "react";
+import connectWS from "../connectWS.js";
+import ChatCard from "./ChatCard.jsx";
+import { useParams } from "react-router-dom";
+import MessageCard from "./MessageCard.jsx";
 import { useSelector } from "react-redux";
 
-export default function ChatWithSeller() {
-  const { sellerId } = useParams();
-  const navigate = useNavigate();
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const [seller, setSeller] = useState(null);
-  const [loading, setLoading] = useState(true);
+function ChatWithSeller() {
   const socketRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+  const [sellerId, setSellerId] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const [isTyping, setIsTyping] = useState({})
+  const authToken = localStorage.getItem("auth-token")
+  
+  const bottomRef = useRef();
+  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null)
+  const [text, setText] = useState("");
 
-  const messagesEndRef = useRef(null);
+  const { productId, senderId: senderIdFromRoute } = useParams();
 
-  const authToken = localStorage.getItem("auth-token");
-  const userId = useSelector((state) => state.auth.userData?._id)
-
-  // Fetch seller info
   useEffect(() => {
-    const fetchSeller = async () => {
-      try {
-        const res = await fetch(`https://tech-exchange-backend.onrender.com/api/auth/getuser`, {
-          method: "GET",
-          headers: { "auth-token": authToken },
-        });
-        const data = await res.json();
-        if (data.success) {
-          setSeller(data.user);
-        }
-      } catch (err) {
-        console.error("Error fetching seller:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-    fetchSeller();
-  }, [authToken]);
+  useEffect(()=> {
+    const token = localStorage.getItem('auth-token');
 
+    fetch(`https://tech-exchange-backend.onrender.com/api/auth/getuser`, {
+      headers : {
+        "auth-token" : token,
+      },
+    } ).then((res) => res.json()).then((data)=> {
+    setUser(data.user);
+    setUserId(data.user._id);
+  }).catch((err) =>console.log(err.message) )
+  }, [])
+
+  useEffect(() => {
+    // console.log("productId : " , productId)
+    if (!productId) return;
+    fetch(`https://tech-exchange-backend.onrender.com/api/chat/${productId}`, {
+      headers: {
+        "auth-token": localStorage.getItem("auth-token"),
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setSellerId(data.sellerId);
+      });
+    console.log("sellerID", sellerId);
+  }, [productId]);
+
+  useEffect(() => {
+    if (!senderIdFromRoute) return;
+
+    // directly set sellerId when coming from chat list
+    setSellerId(senderIdFromRoute);
+  }, [senderIdFromRoute]);
 
   // Auto scroll to latest message
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-
-  
-useEffect(() => {
-  if (!authToken || !sellerId || !userId) return;
+  if (!authToken || !sellerId) return;
+  if(!userId) return;
   if (userId === sellerId) return;
+
 
   socketRef.current = io("https://tech-exchange-backend.onrender.com", {
     auth: {
@@ -60,146 +72,121 @@ useEffect(() => {
     },
   });
 
-  socketRef.current.on("connect", () => {
-    console.log("✅ Socket connected");
-  });
+  
 
-  socketRef.current.on("connect_error", (err) => {
-    console.error("❌ Socket error:", err.message);
-  });
-
+  // join room
   socketRef.current.emit("joinRoom", {
     otherUserId: sellerId,
   });
 
+  // receive message
   socketRef.current.on("receiveMessage", (data) => {
     setMessages((prev) => [...prev, data]);
   });
 
-  return () => {
-    socketRef.current?.disconnect();
-    socketRef.current = null;
+    return () => {
+      socketRef.current.off("roomNotice")
+      socketRef.current.off("chatMessage")
+      // socketRef.current.off("receiveTyping")
+      socketRef.current.off("roomNotice")
+      socketRef.current.off("roomNotice")
+    };
+  }, [sellerId]);
+
+  const sendMessage = (e) => {
+    if(e) e.preventDefault();
+
+    const t = text.trim();
+    if (!t) return;
+
+    const msg = {
+      sellerId,
+      text: t,
+    };
+
+    // send to server
+    socketRef.current.emit("chatMessage", msg);
+
+    setText("");
   };
-}, [authToken, sellerId, userId]);
 
 
-
-  const handleSend = () => {
-  if (!input.trim()) return;
-
-  if (!socketRef.current) {
-    console.error("Socket not connected yet");
-    return;
-  }
-
-  socketRef.current.emit("sendMessage", {
-    otherUserId: sellerId,
-    message: input,
-  });
-
-  setInput("");
-};
-
-
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#efe6de]">
-        <div className="flex justify-center items-center h-96">
-          <p>Loading...</p>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-
-  if (userId && sellerId && userId === sellerId) {
-    return (
-      <div className="min-h-screen bg-[#efe6de]">
-        <div className="flex justify-center items-center h-96">
-          <p>Coldjkflkdjlkfjdljlj</p>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
+  useEffect(()=>{
+    if(!user) return;
+    if(text) {
+      const details = {
+        id : userId,
+        name : user?.fullname,
+      }
+      socketRef.current.emit("typing" , details)
+    }
+  } , [text])
 
   return (
-    <div className="min-h-screen bg-[#efe6de] flex flex-col">
-
-      <div className="container mx-auto flex-1 px-4 py-8">
-        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-96">
-          {/* Header */}
-          <div className="bg-[#dd3a44] text-white p-4 flex items-center gap-3">
-            <button
-              onClick={() => navigate(-1)}
-              className="hover:opacity-80"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <div>
-              <h2 className="font-semibold text-lg">
-                {seller?.fullname || "Seller"}
-              </h2>
-              <p className="text-xs opacity-90">{seller?.email}</p>
-            </div>
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-            {messages.length === 0 ? (
-              <div className="flex items-center justify-center h-full text-gray-400">
-                <p>No messages yet. Start the conversation!</p>
-              </div>
-            ) : (
-              messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${
-                    msg.senderId === userId ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  <div
-                    className={`max-w-xs px-4 py-2 rounded-lg ${
-                      msg.senderId === userId
-                        ? "bg-[#dd3a44] text-white"
-                        : "bg-gray-200 text-gray-900"
-                    }`}
-                  >
-                    <p className="text-sm">{msg.message}</p>
-                    <p className="text-xs opacity-70 mt-1">
-                      {new Date(msg.createdAt).toLocaleTimeString()}
-                    </p>
-                  </div>
-                </div>
-              ))
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input */}
-          <div className="border-t p-4 bg-white flex gap-3">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#dd3a44]"
-            />
-            <button
-              onClick={handleSend}
-              
-              className="bg-[#dd3a44] text-white p-2 rounded-xl hover:bg-[#E85C64]"
-            >
-              <Send className="w-5 h-5" />
-            </button>
-          </div>
+    <div className="flex w-full h-[70%] overflow-hidden">
+      {/* first part */}
+      <div className="hidden lg:block md:flex-[2] h-[87vh] custom-scroll  ms-2 rounded-md border border-gray-500 rounded-tl-md text-white">
+        <hr className=" text-gray-500 w-full" />
+        <div className="">
+          <h1 className="text-2xl font-bold px-5 py-5">Chats</h1>
+        </div>
+        <div className="overflow-auto h-[85%]">
+          {/* show all cards of msgs */}
+          {conversations.map((conversation) => (
+            <ChatCard conversation={conversation} key={conversation.userId} />
+          ))}
         </div>
       </div>
 
-      <Footer />
+      {/* second part */}
+      <div className="flex-[5] h-[87vh] border border-gray-500 mx-2 lg:me-5 rounded-md  text-white">
+        <div className=" flex items-center">
+          <h1 className="text-2xl font-bold px-5 py-5">{user?.fullname}</h1>
+          <p className="px-5 py-5">{isTyping.status ? isTyping.name : ""}</p>
+        </div>
+        <hr className=" text-gray-500 w-full" />
+
+        <div className="h-[70%] overflow-auto custom-scroll w-full">
+          {messages.map((m, index) => (
+            <MessageCard
+              key={index}
+              message={m}
+              isMe={m.senderId === userId}
+              className={
+                m.senderId === userId ? "justify-end" : "justify-start"
+              }
+            />
+          ))}
+
+          <div ref={bottomRef}></div>
+        </div>
+
+        {/* <hr className=" text-gray-500 w-full" /> */}
+        <div className="h-[21%] flex items-center ms-5 ">
+          <input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
+            type="text"
+            className="w-[90%] h-14 bg-[#333333]  outline ps-15 py-2 text-2xl text-white outline-white rounded-s-full  "
+          />
+          <button
+            onClick={sendMessage}
+            
+            className="w-fit  bg-[#dd3a44] rounded-e-2xl py-4 px-5 text-xl me-2"
+            type="button"
+          >
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default ChatWithSeller;

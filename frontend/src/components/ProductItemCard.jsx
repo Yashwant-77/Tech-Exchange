@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../store/cartSlice";
 import { CircleCheck, ArrowLeft, ArrowRight } from "lucide-react";
+import saveCartToDB from "../utils/saveCartToDB";
 
 function ProductItemCard({ product }) {
   const dispatch = useDispatch();
@@ -31,12 +32,14 @@ function ProductItemCard({ product }) {
     else{
 
       dispatch(addToCart(product));
+      saveCartToDB(cartItems);
       showMessage("Added to Cart");
     }
   };
 
   const handleRemoveFromCart = () => {
     dispatch(removeFromCart(product._id));
+    saveCartToDB(cartItems)
     showMessage("Removed from Cart");
   };
 
@@ -102,7 +105,7 @@ function ProductItemCard({ product }) {
             ) : (
               <button
                 onClick={handleAddToCart}
-                className="bg-[#dd3a44] hover:bg-[#E85C64] text-white px-4 py-2 rounded-xl"
+                className="bg-[#dd3a44] hover:bg-[#E85C64] md:ms-5 text-white px-4 py-2 rounded-xl"
               >
                 Add to cart
               </button>
@@ -118,7 +121,7 @@ function ProductItemCard({ product }) {
           {showAlert && (
             <div className="flex justify-center mt-2 text-red-600">
               <CircleCheck className="mr-2" />
-              Your listed this product !
+              You listed this product !
             </div>
           )}
         </div>

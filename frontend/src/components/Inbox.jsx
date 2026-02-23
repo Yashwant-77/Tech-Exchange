@@ -52,9 +52,9 @@ export default function Inbox() {
   }
 
   return (
-    <div className="min-h-screen text-white/80">
+    <div className=" text-white/80">
       {/* <Header /> */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 lg:max-w-[80vw]">
         <h1 className="text-2xl font-bold mb-6">Inbox</h1>
 
         {conversations.length === 0 ? (
@@ -68,17 +68,17 @@ export default function Inbox() {
             {conversations.map((conv) => (
               <div
                 key={conv.userId}
-                onClick={() => navigate(`/chat/${conv.userId}`)}
-                className="bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-lg transition-shadow flex items-center gap-4"
+                onClick={() => navigate(`/chat/user/${conv.userId}`)}
+                className="bg-[#1a1a1a] text-white rounded-lg shadow p-4 cursor-pointer hover:shadow-lg transition-shadow flex items-center gap-4"
               >
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                  {conv.fullname?.charAt(0).toUpperCase() || "U"}
+                <div className="w-12 h-12 bg-[#dd3a44] rounded-full flex items-center justify-center text-white font-semibold">
+                  {conv?.fullname?.charAt(0).toUpperCase() || "U"}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">{conv.fullname || "Unknown User"}</h3>
-                  <p className="text-sm text-gray-500">{conv.email}</p>
+                  <h3 className="font-semibold ">{conv?.fullname || "Unknown User"}</h3>
+                  <p className="text-sm text-gray-500">{conv?.email}</p>
                 </div>
-                <div className="text-blue-600">
+                <div className="text-[#DD3a44]">
                   <MessageCircle className="h-5 w-5" />
                 </div>
               </div>

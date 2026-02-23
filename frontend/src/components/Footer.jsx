@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-[#1a1a1a] text-white/80 py-12 mt-20">
+    <footer className="bg-[#1a1a1a]  text-white/80 py-12 mt-20">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -58,8 +58,11 @@ function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-2">
-              <li>contact@techexchange.com</li>
-              <li>+91-0000000000</li>
+              <li><a href="mailto:contact@techexchange.com">contact@techexchange.com</a></li>
+              <li>
+                <a href="tel:+910000000000">+91 000000000</a>
+
+              </li>
               <li>Indore, India</li>
             </ul>
           </div>
