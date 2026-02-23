@@ -5,6 +5,7 @@ import CartItemCard from "./CartItemCard";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {  clearCart } from "../store/cartSlice";
+import saveCartToDB from "../utils/saveCartToDB";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export default function Cart() {
 
   const handleClearCartBtn = () => {
     dispatch(clearCart());
+    saveCartToDB(items);
   };
 
   return (

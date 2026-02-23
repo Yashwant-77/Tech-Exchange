@@ -1,6 +1,6 @@
 import Button from "./Button";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   decreaseQty,
   increaseQty,
@@ -8,24 +8,30 @@ import {
   updateCartQty,
 } from "../store/cartSlice";
 import { checkedCartItems } from "../store/cartSlice";
+import saveCartToDB from "../utils/saveCartToDB";
 
 function CartItemCard({ p }) {
+  const cartItems = useSelector((state) => state.cartItems.cartItems);
   const dispatch = useDispatch();
 
   const removeItem = (id) => {
     dispatch(removeFromCart(id));
+    saveCartToDB(cartItems)
   };
 
   const handleIncreseBtn = (id) => {
     dispatch(increaseQty(id));
+    saveCartToDB(cartItems)
   };
 
   const handleDecreseBtn = (id) => {
     dispatch(decreaseQty(id));
+    saveCartToDB(cartItems)
   };
 
   const toggleChecked = (id, checked) => {
     dispatch(checkedCartItems({ id, checked }));
+    saveCartToDB(cartItems);
   };
 
   return (

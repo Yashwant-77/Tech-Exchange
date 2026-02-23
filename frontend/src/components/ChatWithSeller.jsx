@@ -11,10 +11,10 @@ function ChatWithSeller() {
   const [sellerId, setSellerId] = useState(null);
   const [conversations, setConversations] = useState([]);
   const [isTyping, setIsTyping] = useState({})
-  const user = useSelector((state) => state.auth.userData);
-  const userId = user?._id;
+  
   const bottomRef = useRef();
-
+  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null)
   const [text, setText] = useState("");
 
   const { productId, senderId: senderIdFromRoute } = useParams();
@@ -22,6 +22,19 @@ function ChatWithSeller() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(()=> {
+    const token = localStorage.getItem('auth-token');
+
+    fetch(`http://localhost:5000/api/auth/getuser`, {
+      headers : {
+        "auth-token" : token,
+      },
+    } ).then((res) => res.json()).then((data)=> {
+    setUser(data.user);
+    setUserId(data.user._id);
+  }).catch((err) =>console.log(err.message) )
+  }, [])
 
   useEffect(() => {
     // console.log("productId : " , productId)
@@ -90,21 +103,21 @@ function ChatWithSeller() {
         setMessages((prev) => [...prev, msg]);
       });
 
-      socket.current.on("receiveTyping" , (typerId , name)=>{
-        if(typerId != userId){
-          setIsTyping({
-            id : typerId,
-            name : name,
-            status : true
-          });
-        }
-      })
+      // socket.current.on("receiveTyping" , (typerId , name)=>{
+      //   if(typerId != userId){
+      //     setIsTyping({
+      //       id : typerId,
+      //       name : name,
+      //       status : true
+      //     });
+      //   }
+      // })
     });
 
     return () => {
       socket.current.off("roomNotice")
       socket.current.off("chatMessage")
-      socket.current.off("receiveTyping")
+      // socket.current.off("receiveTyping")
       socket.current.off("roomNotice")
       socket.current.off("roomNotice")
     };
@@ -122,17 +135,18 @@ function ChatWithSeller() {
     };
 
     // send to server
-    socket.current.emit("chatMessage", { sellerId, text });
+    socket.current.emit("chatMessage", msg);
 
     setText("");
   };
 
 
   useEffect(()=>{
+    if(!user) return;
     if(text) {
       const details = {
         id : userId,
-        name : user.fullname,
+        name : user?.fullname,
       }
       socket.current.emit("typing" , details)
     }

@@ -115,15 +115,15 @@ io.on('connection', (socket) => {
 
   // typing event
 
-  socket.on("typing", ({ userId , name }) => {
-    const chatId = getChatId(socket.user.id, sellerId);
-    socket.to(chatId).emit("receiveTyping", { userId , name });
-  });
+  // socket.on("typing", ({ userId , name }) => {
+  //   const chatId = getChatId(socket.user.id, sellerId);
+  //   socket.to(chatId).emit("receiveTyping", { userId , name });
+  // });
 
-  socket.on("stopTyping", ({ senderId }) => {
-     const chatId = getChatId(socket.user.id, sellerId);
-    socket.to(chatId).emit("receiveStopTyping", { senderId });
-  });
+  // socket.on("stopTyping", ({ senderId }) => {
+  //    const chatId = getChatId(socket.user.id, sellerId);
+  //   socket.to(chatId).emit("receiveStopTyping", { senderId });
+  // });
 
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);

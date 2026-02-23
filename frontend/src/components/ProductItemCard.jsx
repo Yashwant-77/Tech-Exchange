@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../store/cartSlice";
 import { CircleCheck, ArrowLeft, ArrowRight } from "lucide-react";
+import saveCartToDB from "../utils/saveCartToDB";
 
 function ProductItemCard({ product }) {
   const dispatch = useDispatch();
@@ -31,12 +32,14 @@ function ProductItemCard({ product }) {
     else{
 
       dispatch(addToCart(product));
+      saveCartToDB(cartItems);
       showMessage("Added to Cart");
     }
   };
 
   const handleRemoveFromCart = () => {
     dispatch(removeFromCart(product._id));
+    saveCartToDB(cartItems)
     showMessage("Removed from Cart");
   };
 

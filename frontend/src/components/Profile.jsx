@@ -8,12 +8,29 @@ import SellerProductCard from "./SellerProductCard";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.userData); // Assuming authSlice has user data
+  // const user = useSelector((state) => state.auth.userData); // Assuming authSlice has user data
   const isLoggedIn = useSelector((state) => state.auth.status);
+
+  const [user, setUser] = useState(null)
 
   const [boughtProducts, setBoughtProducts] = useState([]);
   const [soldProducts, setSoldProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+ useEffect(()=> {
+    const token = localStorage.getItem('auth-token');
+
+    fetch(`http://localhost:5000/api/auth/getuser`, {
+      headers : {
+        "auth-token" : token,
+      },
+    } ).then((res) => res.json()).then((data)=> {
+    setUser(data.user);
+    setUserId(data.user._id);
+  }).catch((err) =>console.log(err.message) )
+  }, [])
+
+
 
   useEffect(() => {
     if (!isLoggedIn) {
